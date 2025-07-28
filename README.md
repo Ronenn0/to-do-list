@@ -25,7 +25,7 @@ A clean, interactive, and responsive To-Do List web app that allows users to add
 ## 📂 Project Structure
 
 ```
-📁 your-project/
+📁 project/
 ├── index.html       # Main HTML structure
 ├── style.css        # Styling and responsive layout
 └── script.js        # App logic and functionality
@@ -49,7 +49,8 @@ No server needed — it's 100% front-end.
 
 ## 📸 Screenshot
 
-![To-Do App UI](preview.png) <!-- Optional: Add a screenshot here if available -->
+<img width="806" height="442" alt="image" src="https://github.com/user-attachments/assets/35394a07-bbad-4185-8700-c003fc4d97b0" />
+
 
 ## ✍️ Author
 
