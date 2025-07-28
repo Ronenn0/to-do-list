@@ -15,16 +15,20 @@
             <button type="submit" class="add-todo">Add</button>
         </form>
 
+
+        <div class="filters">
+            <button class="all">All</button>
+            <button class="activated">Activated</button>
+            <button class="completed">Completed</button>
+        </div>
         <ul id="todo-list">
             <li>
-                <span class="task-name">Create the ......</span>
-                <input type="button" value="Complete ✓" class="complete">
-                <input type="button" value="Delete 🗑️" class="delete">
-            </li>
-            <li>
-                <span class="task-name">Create the ......</span>
-                <input type="button" value="Complete ✓" class="complete">
-                <input type="button" value="Delete 🗑️" class="delete">
+                <span>Ronen Azam</span>
+                <div class="updaters">
+                    <button class="complete">Complete ✓</button>
+                    <button class="uncomplete">Activate 🔘</button>
+                    <button class="delete">Delete 🗑️</button>
+                </div>
             </li>
         </ul>
     </main>
