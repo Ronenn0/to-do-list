@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-    --primary-background-color: #62ca8d;
-    --secondary-background-color: #61af81;
+    --primary-background-color: #37443c;
+    --secondary-background-color: #485e51;
     --primary-color: black;
-    --secondary-color: #155f34;
+    --secondary-color: #1d462e;
 }
 
 
@@ -13,6 +13,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: monospace;
+    font-size: 1.05rem;
 }
 
 button {
@@ -24,13 +25,11 @@ body {
     display: flex;
     height: 100vh;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     background-color: var(--primary-background-color);
+    margin: 20px;
 }
 
-* {
-    font-size: 1rem;
-}
 
 main {
     padding: 20px;
@@ -47,7 +46,7 @@ main {
 
 h1 {
     text-align: center;
-    font-size: 2.3rem;
+    font-size: 2rem;
     color: var(--secondary-color);
 }
 
@@ -132,18 +131,33 @@ form button.add-todo:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid var(--secondary-color);
+    /* border-bottom: 1px solid var(--secondary-color); */
     padding: 6px 10px;
+    gap: 5px;
 
-    & span.task-name {
+
+    & p.task-name {
         font-weight: bold;
         color: black;
         letter-spacing: 1px;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    & span.task-name.completed {
+    /* p.task-name.completed::before {
+        content: '✅ ';
+    }
+
+    p.task-name.completed::after {
+        content: ' ✅';
+    } */
+
+    & p.task-name.completed {
         /* text-decoration: line-through; */
         opacity: 0.3;
+        color: green;
     }
 }
 
@@ -185,8 +199,12 @@ form button.add-todo:hover {
     }
 }
 
-
-.updaters .delete {}
+main footer {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    border-top: 1px solid black;
+}
 
 
 @media (max-width: 950px) {

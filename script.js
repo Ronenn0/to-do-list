@@ -76,9 +76,10 @@ class ToDo {
  * if doesn't exist it saves it as an empty array.
  * - todoList param is declared as [] as default.
  */
-function loadToDoList() {
+async function loadToDoList() {
     if (!localStorage.getItem('todolist')) {
-        localStorage.setItem('todolist', JSON.stringify([]));
+        todoList = await loadTasksFromApi();
+        localStorage.setItem('todolist', JSON.stringify(todoList));
         return;
     }
     todoList = JSON.parse(localStorage.getItem('todolist')).map(todo => new ToDo(todo));
@@ -173,7 +174,7 @@ function displayList() {
 
         HTML += `
         <li data-id="${todo.id}">
-                <span class="task-name ${completedClassName}">${todo.name}</span>
+                <p class="task-name ${completedClassName}">${todo.name}</p>
                 <div class="updaters">
                 <button class="complete ${buttonsState.complete}" onclick="completeTask(this)">Complete ✓</button>
                 <button class="uncomplete ${buttonsState.activate}" onclick="completeTask(this)">Activate 🔘</button>
@@ -215,7 +216,24 @@ function addFilterEventListeners() {
     });
 }
 
-loadToDoList();
-displayList();
-addFormEventListener();
-addFilterEventListeners();
+async function loadTasksFromApi(amount = 3) {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/todos?_limit=${amount}`);
+    const tasks = await response.json();
+    return tasks.map(task => {
+        return new ToDo({
+            name: task.title,
+            isCompleted: task.completed
+        });
+    });
+}
+// loadTasksFromApi();
+
+
+async function start() {
+    await loadToDoList();
+    displayList();
+    addFormEventListener();
+    addFilterEventListeners();
+}
+
+start();
