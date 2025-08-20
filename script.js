@@ -216,8 +216,18 @@ function addFilterEventListeners() {
     });
 }
 
-async function loadTasksFromApi(amount = 3) {
+/**
+ * 
+ * @param {number} amount -> amount of tasks to load
+ * @returns an array of ToDo tasks.
+ * uses an API to load the data (tasks).
+ */
+async function loadTasksFromApi(amount = 5) {
     const response = await fetch(`https://jsonplaceholder.typicode.com/todos?_limit=${amount}`);
+    if (!response.ok) {
+        console.log(`Loading Error ${response.status}`);
+        return [];
+    }
     const tasks = await response.json();
     return tasks.map(task => {
         return new ToDo({
@@ -226,8 +236,6 @@ async function loadTasksFromApi(amount = 3) {
         });
     });
 }
-// loadTasksFromApi();
-
 
 async function start() {
     await loadToDoList();
