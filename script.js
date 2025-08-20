@@ -12,6 +12,7 @@ class ToDo {
     id;
     constructor(toDoDetails) {
         this.name = toDoDetails.name;
+        this.date = toDoDetails.date;
         this.isCompleted = toDoDetails.isCompleted;
         this.id = crypto.randomUUID();
     }
@@ -22,14 +23,15 @@ class ToDo {
      * Adds a task to the todoList and updates local storage.
      * - by checking that it doesn't exist at first.
      */
-    static add(name) {
+    static add(name, date) {
         if (todoList.some(todo => todo.name.trim().toLowerCase() === name.trim().toLowerCase())) {
             alert('This task already exists');
             return;
         }
         todoList.push(new ToDo({
             name: name,
-            isCompleted: false
+            isCompleted: false,
+            date: date
         }));
         ToDo.updateStorage();
     }
@@ -113,6 +115,7 @@ function deleteTask(btn) {
  * it highlights the button.
  */
 function highlightFilter(filter) {
+    if (filter == 'by-date') return;
     filterButtons.forEach((button, index) => {
         if (filter == index) addClass(button, 'picked');
         else removeClass(button, 'picked');
@@ -156,6 +159,9 @@ function removeClass(element, className) {
 function displayList() {
     const todoListContainer = document.querySelector('#todo-list');
     let HTML = '';
+    if (filter == 'by-date') {
+        todoList = todoList.sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
     todoList.forEach(todo => {
 
         highlightFilter(filter);
@@ -174,7 +180,10 @@ function displayList() {
 
         HTML += `
         <li data-id="${todo.id}">
-                <p class="task-name ${completedClassName}">${todo.name}</p>
+                <div class="left-side">
+                    <p class="task-date">${todo.date.split('-').reverse().join('/')}</p>
+                    <p class="task-name ${completedClassName}">${todo.name}</p>
+                </div>
                 <div class="updaters">
                 <button class="complete ${buttonsState.complete}" onclick="completeTask(this)">Complete ✓</button>
                 <button class="uncomplete ${buttonsState.activate}" onclick="completeTask(this)">Activate 🔘</button>
@@ -193,13 +202,25 @@ function displayList() {
  */
 function addFormEventListener() {
     const todoInput = document.querySelector('#todo-input');
+    const todoDate = document.querySelector('#todo-date');
     const form = document.querySelector('#todo-form');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const input = todoInput.value.trim();
-        if (input.length == 0) return;
-        ToDo.add(input);
+        const task = todoInput.value.trim();
+        const date = todoDate.value;
+        if (task.length == 0 || date.length == 0) return;
+
+        const selectedDate = new Date(date);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (selectedDate < today) {
+            alert('The selected date has already passed.');
+            return;
+        }
+        ToDo.add(task, date);
         todoInput.value = ''; // ✅ clear input
+        todoDate.value = '';
         displayList();
     });
 }
@@ -208,6 +229,11 @@ function addFormEventListener() {
  * filters tasks when buttons(filters) are clicked.
  */
 function addFilterEventListeners() {
+    const dateFilter = document.querySelector('.sort-by-date');
+    dateFilter.addEventListener('click', () => {
+        filter = 'by-date';
+        displayList();
+    });
     filterButtons.forEach((button, index) => {
         button.addEventListener('click', () => {
             filter = index;
@@ -222,7 +248,7 @@ function addFilterEventListeners() {
  * @returns an array of ToDo tasks.
  * uses an API to load the data (tasks).
  */
-async function loadTasksFromApi(amount = 5) {
+async function loadTasksFromApi(amount = 4) {
     const response = await fetch(`https://jsonplaceholder.typicode.com/todos?_limit=${amount}`);
     if (!response.ok) {
         console.log(`Loading Error ${response.status}`);
@@ -232,7 +258,8 @@ async function loadTasksFromApi(amount = 5) {
     return tasks.map(task => {
         return new ToDo({
             name: task.title,
-            isCompleted: task.completed
+            isCompleted: task.completed,
+            date: new Date().toISOString().split("T")[0]
         });
     });
 }

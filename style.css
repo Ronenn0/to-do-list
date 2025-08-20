@@ -135,16 +135,19 @@ form button.add-todo:hover {
     padding: 6px 10px;
     gap: 5px;
 
+    & p.task-date {
+        margin-bottom: 5px;
+    }
 
     & p.task-name {
         font-weight: bold;
         color: black;
         letter-spacing: 1px;
-        flex: 1;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
 
     /* p.task-name.completed::before {
         content: '✅ ';
@@ -197,6 +200,27 @@ form button.add-todo:hover {
     & .uncomplete {
         --main: #3f3f3f;
     }
+}
+
+input.sort-by-date {
+    background-color: white;
+    color: var(--primary-background-color);
+    border: 1px solid var(--primary-background-color);
+    padding: 4px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+input.sort-by-date:hover {
+    background-color: var(--primary-background-color);
+    color: white;
+    border: 1px solid white;
+    transform: translateY(-3px);
+}
+
+input.sort-by-date:active {
+    scale: 1.1;
 }
 
 main footer {
