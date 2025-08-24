@@ -55,7 +55,7 @@ class Task {
     /**
      * Deletes task and updates local storage
      */
-    delete() {
+    deleteTask() {
         const index = tasks.findIndex(task => task.name.toLowerCase() === this.name.toLowerCase());
 
         if (index !== -1) {
@@ -71,6 +71,30 @@ class Task {
     static findByLiId(id) {
         return tasks.find(task => task.id === id);
     }
+
+
+    /**
+     * 
+     * @param {HTMLButtonElement} btn -> the complete button that was pressed.
+     * Marks a task as complete and updates the UI.
+     */
+    static completeTask(btn) {
+        const id = btn.parentElement.parentElement.dataset.id;
+        Task.findByLiId(id).complete();
+        renderTasks();
+    }
+
+    /**
+     * 
+     * @param {HTMLButtonElement} btn -> the delete button that was pressed.
+     * Deletes a task and updates the UI.
+     */
+    static deleteTask(btn) {
+        const id = btn.parentElement.parentElement.dataset.id;
+        Task.findByLiId(id).deleteTask();
+        renderTasks();
+    }
+
 }
 
 /**
@@ -86,28 +110,6 @@ async function getTasks() {
         return;
     }
     tasks = JSON.parse(localStorage.getItem('tasks')).map(task => new Task(task));
-}
-
-/**
- * 
- * @param {HTMLButtonElement} btn -> the complete button that was pressed.
- * Marks a task as complete and updates the UI.
- */
-function completeTask(btn) {
-    const id = btn.parentElement.parentElement.dataset.id;
-    Task.findByLiId(id).complete();
-    renderTasks();
-}
-
-/**
- * 
- * @param {HTMLButtonElement} btn -> the delete button that was pressed.
- * Deletes a task and updates the UI.
- */
-function deleteTask(btn) {
-    const id = btn.parentElement.parentElement.dataset.id;
-    Task.findByLiId(id).delete();
-    renderTasks();
 }
 
 /**
@@ -174,9 +176,9 @@ function renderTasks(filterByDate) {
         tasks = sortTasks(tasks);
         Task.saveTasks();
     }
+    filterTasks(filter);
     tasks.forEach(task => {
 
-        filterTasks(filter);
         // Filters what tasks get to be shown.
         if (filter == 1) {
             if (task.isCompleted) return;
@@ -197,15 +199,20 @@ function renderTasks(filterByDate) {
                     <p class="task-name ${completedClassName}">${task.name}</p>
                 </div>
                 <div class="updaters">
-                <button class="complete ${buttonsState.complete}" onclick="completeTask(this)">Complete ✓</button>
-                <button class="uncomplete ${buttonsState.activate}" onclick="completeTask(this)">Activate 🔘</button>
-                <button class="delete" onclick="deleteTask(this)" >Delete 🗑️</button>
+                <button class="complete ${buttonsState.complete}" onclick="Task.completeTask(this)">Complete ✓</button>
+                <button class="uncomplete ${buttonsState.activate}" onclick="Task.completeTask(this)">Activate 🔘</button>
+                <button class="delete" onclick="Task.deleteTask(this)" >Delete 🗑️</button>
                 </div>
             </li>
         `;
     });
+    //no results
+    if (HTML == '') {
+        tasksContainer.innerHTML = `
+        <small>Found no tasks</small>
+        `;
+    } else tasksContainer.innerHTML = HTML;
 
-    tasksContainer.innerHTML = HTML;
 };
 
 /**
@@ -262,7 +269,7 @@ function addFilterEventListeners() {
  * @returns an array of ToDo tasks.
  * uses an API to load the data (tasks).
  */
-async function fetchInitialTasks(amount = 4) {
+async function fetchInitialTasks(amount = 5) {
     const response = await fetch(`https://jsonplaceholder.typicode.com/todos?_limit=${amount}`);
     if (!response.ok) {
         console.log(`Loading Error ${response.status}`);
