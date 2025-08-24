@@ -81,7 +81,7 @@ class Task {
  */
 async function getTasks() {
     if (!localStorage.getItem('tasks')) {
-        tasks = await loadTasksFromApi();
+        tasks = await fetchInitialTasks();
         localStorage.setItem('tasks', JSON.stringify(tasks));
         return;
     }
@@ -123,6 +123,14 @@ function filterTasks(filter) {
         else removeClass(button, 'picked');
     });
 }
+/**
+ * 
+ * @param {Array} tasksList -> array of Tasks
+ * @returns a sorted array of tasks sorted by date.
+ */
+function sortTasks(tasksList) {
+    return tasksList.sort((a, b) => new Date(a.date) - new Date(b.date));
+}
 
 /**
  * 
@@ -163,7 +171,7 @@ function renderTasks(filterByDate) {
     let HTML = '';
     //filters by date and saves the filtered list.
     if (filterByDate) {
-        tasks = tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+        tasks = sortTasks(tasks);
         Task.saveTasks();
     }
     tasks.forEach(task => {
@@ -254,7 +262,7 @@ function addFilterEventListeners() {
  * @returns an array of ToDo tasks.
  * uses an API to load the data (tasks).
  */
-async function loadTasksFromApi(amount = 4) {
+async function fetchInitialTasks(amount = 4) {
     const response = await fetch(`https://jsonplaceholder.typicode.com/todos?_limit=${amount}`);
     if (!response.ok) {
         console.log(`Loading Error ${response.status}`);
