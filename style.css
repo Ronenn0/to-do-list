@@ -61,7 +61,7 @@ form * {
     padding: 5px 10px;
 }
 
-form #todo-input {
+form #task-input {
     flex: 0.8;
     max-width: 600px;
     color: var(--secondary-color);
@@ -70,16 +70,16 @@ form #todo-input {
     letter-spacing: 0.7px;
 }
 
-form #todo-input::placeholder {
+form #task-input::placeholder {
     opacity: 0.4;
 }
 
-form #todo-input:focus {
+form #task-input:focus {
     outline: none;
     border-color: var(--secondary-color);
 }
 
-form button.add-todo {
+form button.add-task {
     cursor: pointer;
     flex: 0.1;
     color: white;
@@ -89,7 +89,7 @@ form button.add-todo {
     transition: background-color 0.18s;
 }
 
-form button.add-todo:hover {
+form button.add-task:hover {
     background-color: var(--secondary-background-color);
 }
 
@@ -120,14 +120,14 @@ form button.add-todo:hover {
     color: white;
 }
 
-#todo-list {
+#task-list {
     display: flex;
     flex-direction: column;
     list-style-type: none;
     gap: 10px;
 }
 
-#todo-list li {
+#task-list li {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -137,6 +137,7 @@ form button.add-todo:hover {
 
     & p.task-date {
         margin-bottom: 5px;
+        font-size: 0.7rem;
     }
 
     & p.task-name {
@@ -158,7 +159,7 @@ form button.add-todo:hover {
     } */
 
     & p.task-name.completed {
-        /* text-decoration: line-through; */
+        text-decoration: line-through;
         opacity: 0.3;
         color: green;
     }

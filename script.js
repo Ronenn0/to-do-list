@@ -1,46 +1,47 @@
 
 let filter = 0; // current filter 0, 1, 2
-let todoList = [];
+let filterByDate = false;
+let tasks = [];
 const filterButtons = document.querySelectorAll('.filters button');
 
 /**
  * A class that helps maintain the tasks.
  */
-class ToDo {
+class Task {
     name;
     isCompleted;
     id;
-    constructor(toDoDetails) {
-        this.name = toDoDetails.name;
-        this.date = toDoDetails.date;
-        this.isCompleted = toDoDetails.isCompleted;
+    constructor(taskDetails) {
+        this.name = taskDetails.name;
+        this.date = taskDetails.date;
+        this.isCompleted = taskDetails.isCompleted;
         this.id = crypto.randomUUID();
     }
 
     /**
      * 
      * @param {*} name -> task name
-     * Adds a task to the todoList and updates local storage.
+     * Adds a task to the tasks and updates local storage.
      * - by checking that it doesn't exist at first.
      */
-    static add(name, date) {
-        if (todoList.some(todo => todo.name.trim().toLowerCase() === name.trim().toLowerCase())) {
+    static addTask(name, date) {
+        if (tasks.some(task => task.name.trim().toLowerCase() === name.trim().toLowerCase())) {
             alert('This task already exists');
             return;
         }
-        todoList.push(new ToDo({
+        tasks.push(new Task({
             name: name,
             isCompleted: false,
             date: date
         }));
-        ToDo.updateStorage();
+        Task.saveTasks();
     }
 
     /**
-     * Updates the todoList parameter in local storage.
+     * Updates the tasks parameter in local storage.
      */
-    static updateStorage() {
-        localStorage.setItem('todolist', JSON.stringify(todoList));
+    static saveTasks(tasksList = tasks) {
+        localStorage.setItem('tasks', JSON.stringify(tasksList));
     }
 
     /**
@@ -48,19 +49,19 @@ class ToDo {
      */
     complete() {
         this.isCompleted = !this.isCompleted;
-        ToDo.updateStorage();
+        Task.saveTasks();
     }
 
     /**
      * Deletes task and updates local storage
      */
     delete() {
-        const index = todoList.findIndex(todo => todo.name.toLowerCase() === this.name.toLowerCase());
+        const index = tasks.findIndex(task => task.name.toLowerCase() === this.name.toLowerCase());
 
         if (index !== -1) {
-            todoList.splice(index, 1);
+            tasks.splice(index, 1);
         }
-        ToDo.updateStorage();
+        Task.saveTasks();
     }
     /**
      * 
@@ -68,23 +69,23 @@ class ToDo {
      * @returns the Li with the specific Id
      */
     static findByLiId(id) {
-        return todoList.find(task => task.id === id);
+        return tasks.find(task => task.id === id);
     }
 }
 
 /**
  * 
- * Loads the todoList from localStorage.
+ * Loads the tasks from localStorage.
  * if doesn't exist it saves it as an empty array.
- * - todoList param is declared as [] as default.
+ * - tasks param is declared as [] as default.
  */
-async function loadToDoList() {
-    if (!localStorage.getItem('todolist')) {
-        todoList = await loadTasksFromApi();
-        localStorage.setItem('todolist', JSON.stringify(todoList));
+async function getTasks() {
+    if (!localStorage.getItem('tasks')) {
+        tasks = await loadTasksFromApi();
+        localStorage.setItem('tasks', JSON.stringify(tasks));
         return;
     }
-    todoList = JSON.parse(localStorage.getItem('todolist')).map(todo => new ToDo(todo));
+    tasks = JSON.parse(localStorage.getItem('tasks')).map(task => new Task(task));
 }
 
 /**
@@ -94,8 +95,8 @@ async function loadToDoList() {
  */
 function completeTask(btn) {
     const id = btn.parentElement.parentElement.dataset.id;
-    ToDo.findByLiId(id).complete();
-    displayList();
+    Task.findByLiId(id).complete();
+    renderTasks();
 }
 
 /**
@@ -105,17 +106,18 @@ function completeTask(btn) {
  */
 function deleteTask(btn) {
     const id = btn.parentElement.parentElement.dataset.id;
-    ToDo.findByLiId(id).delete();
-    displayList();
+    Task.findByLiId(id).delete();
+    renderTasks();
 }
 
 /**
  * 
  * @param {number} filter -> highlighted filter button's index
+ * the filter is a number and not a whole word - to make it faster O(1) instead of O(n).
  * it highlights the button.
  */
-function highlightFilter(filter) {
-    if (filter == 'by-date') return;
+function filterTasks(filter) {
+    // if (filter == 'by-date') return;
     filterButtons.forEach((button, index) => {
         if (filter == index) addClass(button, 'picked');
         else removeClass(button, 'picked');
@@ -153,36 +155,38 @@ function removeClass(element, className) {
  *  0: no filters. (Default value)
  *  1: show only activated (uncompleted) tasks.
  *  2: show only completed tasks.
- * 
+ *  
  *  The function displays a list of tasks with or without filter inside the ul#todo-list Element.
  */
-function displayList() {
-    const todoListContainer = document.querySelector('#todo-list');
+function renderTasks(filterByDate) {
+    const tasksContainer = document.querySelector('#task-list');
     let HTML = '';
-    if (filter == 'by-date') {
-        todoList = todoList.sort((a, b) => new Date(a.date) - new Date(b.date));
+    //filters by date and saves the filtered list.
+    if (filterByDate) {
+        tasks = tasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+        Task.saveTasks();
     }
-    todoList.forEach(todo => {
+    tasks.forEach(task => {
 
-        highlightFilter(filter);
+        filterTasks(filter);
         // Filters what tasks get to be shown.
         if (filter == 1) {
-            if (todo.isCompleted) return;
+            if (task.isCompleted) return;
         } else if (filter == 2) {
-            if (!todo.isCompleted) return;
+            if (!task.isCompleted) return;
         }
 
-        const completedClassName = (todo.isCompleted && filter != 2) ? 'completed' : '';
+        const completedClassName = (task.isCompleted && filter != 2) ? 'completed' : '';
         const buttonsState = {
-            complete: todo.isCompleted ? 'hidden' : '',
-            activate: todo.isCompleted ? '' : 'hidden'
+            complete: task.isCompleted ? 'hidden' : '',
+            activate: task.isCompleted ? '' : 'hidden'
         };
 
         HTML += `
-        <li data-id="${todo.id}">
+        <li data-id="${task.id}">
                 <div class="left-side">
-                    <p class="task-date">${todo.date.split('-').reverse().join('/')}</p>
-                    <p class="task-name ${completedClassName}">${todo.name}</p>
+                    <p class="task-date">${task.date.split('-').reverse().join('/')}</p>
+                    <p class="task-name ${completedClassName}">${task.name}</p>
                 </div>
                 <div class="updaters">
                 <button class="complete ${buttonsState.complete}" onclick="completeTask(this)">Complete ✓</button>
@@ -193,7 +197,7 @@ function displayList() {
         `;
     });
 
-    todoListContainer.innerHTML = HTML;
+    tasksContainer.innerHTML = HTML;
 };
 
 /**
@@ -201,13 +205,13 @@ function displayList() {
  * 2. Adds tasks that the user inputted (if valid)
  */
 function addFormEventListener() {
-    const todoInput = document.querySelector('#todo-input');
-    const todoDate = document.querySelector('#todo-date');
-    const form = document.querySelector('#todo-form');
+    const taskInput = document.querySelector('#task-input');
+    const taskDate = document.querySelector('#task-date');
+    const form = document.querySelector('#task-form');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        const task = todoInput.value.trim();
-        const date = todoDate.value;
+        const task = taskInput.value.trim();
+        const date = taskDate.value;
         if (task.length == 0 || date.length == 0) return;
 
         const selectedDate = new Date(date);
@@ -218,10 +222,10 @@ function addFormEventListener() {
             alert('The selected date has already passed.');
             return;
         }
-        ToDo.add(task, date);
-        todoInput.value = ''; // ✅ clear input
-        todoDate.value = '';
-        displayList();
+        Task.addTask(task, date);
+        taskInput.value = ''; // ✅ clear input
+        taskDate.value = '';
+        renderTasks();
     });
 }
 
@@ -229,15 +233,17 @@ function addFormEventListener() {
  * filters tasks when buttons(filters) are clicked.
  */
 function addFilterEventListeners() {
+    //sorts by date
     const dateFilter = document.querySelector('.sort-by-date');
     dateFilter.addEventListener('click', () => {
-        filter = 'by-date';
-        displayList();
+        // filterByDate = !filterByDate;
+        renderTasks(true);
     });
+
     filterButtons.forEach((button, index) => {
         button.addEventListener('click', () => {
             filter = index;
-            displayList();
+            renderTasks();
         });
     });
 }
@@ -256,7 +262,7 @@ async function loadTasksFromApi(amount = 4) {
     }
     const tasks = await response.json();
     return tasks.map(task => {
-        return new ToDo({
+        return new Task({
             name: task.title,
             isCompleted: task.completed,
             date: new Date().toISOString().split("T")[0]
@@ -265,8 +271,8 @@ async function loadTasksFromApi(amount = 4) {
 }
 
 async function start() {
-    await loadToDoList();
-    displayList();
+    await getTasks();
+    renderTasks();
     addFormEventListener();
     addFilterEventListeners();
 }
