@@ -26,7 +26,7 @@ class Task {
      */
     static addTask(name, date) {
         if (tasks.some(task => task.name.trim().toLowerCase() === name.trim().toLowerCase())) {
-            alert('This task already exists');
+            message('This task already exists', 3);
             return;
         }
         tasks.push(new Task({
@@ -35,6 +35,7 @@ class Task {
             date: date
         }));
         Task.saveTasks();
+        message('Task has been added successfully!', 2);
     }
 
     /**
@@ -50,6 +51,7 @@ class Task {
     complete() {
         this.isCompleted = !this.isCompleted;
         Task.saveTasks();
+        message(this.isCompleted ? 'Task has been marked as completed.' : 'Task has been activated!', 2);
     }
 
     /**
@@ -62,6 +64,7 @@ class Task {
             tasks.splice(index, 1);
         }
         Task.saveTasks();
+        message('Task has been removed!', 3);
     }
     /**
      * 
@@ -196,7 +199,7 @@ function renderTasks(filterByDate) {
         <li data-id="${task.id}">
                 <div class="left-side">
                     <p class="task-date">${task.date.split('-').reverse().join('/')}</p>
-                    <p class="task-name ${completedClassName}">${task.name}</p>
+                    <textarea class="task-name ${completedClassName}" readonly>${task.name}</textarea>
                 </div>
                 <div class="updaters">
                 <button class="complete ${buttonsState.complete}" onclick="Task.completeTask(this)">Complete ✓</button>
@@ -226,17 +229,25 @@ function addFormEventListener() {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const task = taskInput.value.trim();
-        const date = taskDate.value;
-        if (task.length == 0 || date.length == 0) return;
-
-        const selectedDate = new Date(date);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        if (selectedDate < today) {
-            alert('The selected date has already passed.');
+        let date = taskDate.value;
+        if (task.length == 0) {
+            message('You must add a task description!', 3);
+            taskInput.focus();
             return;
         }
+        if (date.length == 0) {
+            date = 'No date declared'
+        } else {
+            const selectedDate = new Date(date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (selectedDate < today) {
+                message('The selected date has already passed.', 3);
+                return;
+            }
+        }
+
         Task.addTask(task, date);
         taskInput.value = ''; // ✅ clear input
         taskDate.value = '';
@@ -253,6 +264,7 @@ function addFilterEventListeners() {
     dateFilter.addEventListener('click', () => {
         // filterByDate = !filterByDate;
         renderTasks(true);
+        message('Sorted tasks by date!');
     });
 
     filterButtons.forEach((button, index) => {
@@ -283,6 +295,43 @@ async function fetchInitialTasks(amount = 5) {
             date: new Date().toISOString().split("T")[0]
         });
     });
+}
+
+let messageTimeoutId;
+let timerMS = 0;
+let removingMessage = false;
+const messageContainer = document.querySelector('.message-container');
+/**
+ * 
+ * @param {string} messageText 
+ * @param {number} type -> 1: normal, 2: success, 3: error message
+ */
+function message(messageText, type = 1) {
+    const color = type == 1 ? 'white' : type == 2 ? 'green' : 'red';
+    const messageP = document.getElementById('message');
+    messageContainer.style.transform = 'translateY(0%)';
+    messageContainer.style.backgroundColor = color;
+    messageP.textContent = messageText;
+    if (timerMS > 0) {
+        timerMS = 3000;
+    } else {
+        timerMS = 3000;
+        removeMessage();
+    }
+}
+
+async function removeMessage() {
+    if (timerMS <= 0) {
+        messageContainer.style.transform = 'translateY(-100%)';
+        return;
+    }
+    timerMS -= 100;
+    await sleep(100);
+    removeMessage();
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function start() {

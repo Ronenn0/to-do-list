@@ -13,7 +13,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: monospace;
-    font-size: 1.05rem;
+    font-size: 1rem;
 }
 
 button {
@@ -57,17 +57,19 @@ body header h1 {
 form {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     gap: 10px;
 }
 
 
 form * {
     padding: 5px 10px;
+    text-align: center;
 }
 
 form #task-input {
     flex: 0.8;
-    max-width: 600px;
+    /* max-width: 600px; */
     color: var(--secondary-color);
     border-radius: 3px;
     border: 2px solid #aaa;
@@ -95,6 +97,40 @@ form button.add-task {
 
 form button.add-task:hover {
     background-color: var(--secondary-background-color);
+}
+
+.message-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: 10px 30px;
+    transform: translateY(-100%);
+    background-color: var(--primary-background-color);
+    transition: transform 0.15s, background-color 0.05s;
+}
+
+.message-container.show {
+    animation: show 3s linear forwards;
+}
+
+@keyframes show {
+
+    0%,
+    100% {
+        transform: translateY(-100%);
+    }
+
+    20%,
+    80% {
+        transform: translateY(0);
+    }
+}
+
+#message {
+    text-align: center;
+    font-size: 1rem;
+
 }
 
 .filters {
@@ -132,6 +168,8 @@ form button.add-task:hover {
 }
 
 #task-list li {
+    width: 100%;
+    height: fit-content;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -144,14 +182,24 @@ form button.add-task:hover {
         font-size: 0.7rem;
     }
 
-    & p.task-name {
+    & textarea.task-name {
         font-weight: bold;
         color: black;
         letter-spacing: 1px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        overflow: auto;
+        /* text-overflow: ellipsis; */
+        border: 0;
+        resize: none;
+        outline: none;
+        width: 95%;
+        height: 100%;
+
     }
+
+    .left-side {
+        flex: 4;
+    }
+
 
 
     /* p.task-name.completed::before {
@@ -173,10 +221,12 @@ form button.add-task:hover {
     display: flex;
     gap: 5px;
     font-size: inherit;
+    flex: 1;
 
     & button {
         background-color: white;
         border: none;
+        white-space: nowrap;
         cursor: pointer;
         padding: 2px 4px;
         border-radius: 3px;
@@ -255,17 +305,18 @@ body>footer>small {
     }
 }
 
-
+/* 
 @media (max-width: 950px) {
 
     * {
         font-size: 0.9rem;
     }
-}
+} */
 
+/* 
 @media (max-width: 650px) {
 
     * {
         font-size: 0.7rem;
     }
-}
+} */
