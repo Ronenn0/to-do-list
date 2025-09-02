@@ -23,7 +23,6 @@ button {
 
 body {
     display: flex;
-    height: 100vh;
     justify-content: flex-start;
     flex-direction: column;
     align-items: center;
@@ -110,23 +109,6 @@ form button.add-task:hover {
     transition: transform 0.15s, background-color 0.05s;
 }
 
-.message-container.show {
-    animation: show 3s linear forwards;
-}
-
-@keyframes show {
-
-    0%,
-    100% {
-        transform: translateY(-100%);
-    }
-
-    20%,
-    80% {
-        transform: translateY(0);
-    }
-}
-
 #message {
     text-align: center;
     font-size: 1rem;
@@ -210,10 +192,10 @@ form button.add-task:hover {
         content: ' ✅';
     } */
 
-    & p.task-name.completed {
+    & textarea.task-name.completed {
         text-decoration: line-through;
         opacity: 0.3;
-        color: green;
+        /* color: green; */
     }
 }
 

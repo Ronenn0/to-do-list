@@ -270,6 +270,7 @@ function addFilterEventListeners() {
     filterButtons.forEach((button, index) => {
         button.addEventListener('click', () => {
             filter = index;
+            message(`Rendering ${filter == 0 ? 'All' : filter == 1 ? 'only activated' : filter == 2 ? 'only completed' : ''} tasks!`);
             renderTasks();
         });
     });
