@@ -112,6 +112,7 @@ form button.add-task:hover {
 #message {
     text-align: center;
     font-size: 1rem;
+    color: white;
 
 }
 
@@ -202,7 +203,6 @@ form button.add-task:hover {
 .updaters {
     display: flex;
     gap: 5px;
-    font-size: inherit;
     flex: 1;
 
     & button {
@@ -215,6 +215,7 @@ form button.add-task:hover {
         color: var(--main);
         border: 1px solid var(--main);
         transition: all 0.2s;
+        font-size: 0.8rem;
     }
 
     & button.hidden {
@@ -287,18 +288,12 @@ body>footer>small {
     }
 }
 
-/* 
-@media (max-width: 950px) {
-
+@media (max-width: 500px) {
     * {
         font-size: 0.9rem;
     }
-} */
 
-/* 
-@media (max-width: 650px) {
-
-    * {
-        font-size: 0.7rem;
+    .updaters button {
+        font-size: 0.6rem;
     }
-} */
+}

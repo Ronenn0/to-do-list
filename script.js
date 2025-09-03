@@ -64,7 +64,7 @@ class Task {
             tasks.splice(index, 1);
         }
         Task.saveTasks();
-        message('Task has been removed!', 3);
+        message('Task has been deleted!', 3);
     }
     /**
      * 
@@ -202,8 +202,8 @@ function renderTasks(filterByDate) {
                     <textarea class="task-name ${completedClassName}" readonly>${task.name}</textarea>
                 </div>
                 <div class="updaters">
-                <button class="complete ${buttonsState.complete}" onclick="Task.completeTask(this)">Complete ✓</button>
-                <button class="uncomplete ${buttonsState.activate}" onclick="Task.completeTask(this)">Activate 🔘</button>
+                <button class="complete ${buttonsState.complete}" onclick="Task.completeTask(this)">Mark as completed ✓</button>
+                <button class="uncomplete ${buttonsState.activate}" onclick="Task.completeTask(this)">Activate back 🔘</button>
                 <button class="delete" onclick="Task.deleteTask(this)" >Delete 🗑️</button>
                 </div>
             </li>
@@ -308,7 +308,7 @@ const messageContainer = document.querySelector('.message-container');
  * @param {number} type -> 1: normal, 2: success, 3: error message
  */
 function message(messageText, type = 1) {
-    const color = type == 1 ? 'white' : type == 2 ? 'green' : 'red';
+    const color = type == 1 ? 'black' : type == 2 ? 'green' : 'red';
     const messageP = document.getElementById('message');
     messageContainer.style.transform = 'translateY(0%)';
     messageContainer.style.backgroundColor = color;
