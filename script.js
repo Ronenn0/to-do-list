@@ -298,14 +298,13 @@ async function fetchInitialTasks(amount = 5) {
     });
 }
 
-let messageTimeoutId;
 let timerMS = 0;
-let removingMessage = false;
 const messageContainer = document.querySelector('.message-container');
 /**
  * 
  * @param {string} messageText 
- * @param {number} type -> 1: normal, 2: success, 3: error message
+ * @param {number} type -> 1: normal, 2: success, 3: error message\
+ * pops in a message with a color specified to the message type.
  */
 function message(messageText, type = 1) {
     const color = type == 1 ? 'black' : type == 2 ? 'green' : 'red';
@@ -321,6 +320,10 @@ function message(messageText, type = 1) {
     }
 }
 
+/**
+ * 
+ * pops-out the message
+ */
 async function removeMessage() {
     if (timerMS <= 0) {
         messageContainer.style.transform = 'translateY(-100%)';
@@ -331,10 +334,19 @@ async function removeMessage() {
     removeMessage();
 }
 
+/**
+ * 
+ * @param {number} ms -> miliseconds
+ * @returns a promise that takes ms miliseconds to finish
+ * the point of this function is to wait ms miliseconds - sleep.
+ */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/**
+ * Initializes the script
+ */
 async function start() {
     await getTasks();
     renderTasks();
