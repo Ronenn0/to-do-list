@@ -1,0 +1,6 @@
+# robots.txt for https://ronenn0.github.io/to-do-list/
+
+User-agent: *
+Allow: /
+
+Sitemap: https://ronenn0.github.io/to-do-list/sitemap.xml
