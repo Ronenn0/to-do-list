@@ -199,7 +199,7 @@ function renderTasks(filterByDate) {
         <li data-id="${task.id}">
                 <div class="left-side">
                     <p class="task-date">${task.date.split('-').reverse().join('/')}</p>
-                    <textarea class="task-name ${completedClassName}" readonly>${task.name}</textarea>
+                    <textarea aria-label="Task" class="task-name ${completedClassName}" readonly>${task.name}</textarea>
                 </div>
                 <div class="updaters">
                 <button class="complete ${buttonsState.complete}" onclick="Task.completeTask(this)">Mark as completed ✓</button>

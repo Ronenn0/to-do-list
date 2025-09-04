@@ -16,6 +16,8 @@
     font-size: 1rem;
 }
 
+input[type="button"],
+input[type="submit"],
 button {
     font-family: inherit
 }
@@ -84,7 +86,7 @@ form #task-input:focus {
     border-color: var(--primary-background-color);
 }
 
-form button.add-task {
+form input[type="submit"].add-task {
     cursor: pointer;
     flex: 0.1;
     color: white;
@@ -94,7 +96,7 @@ form button.add-task {
     transition: background-color 0.18s;
 }
 
-form button.add-task:hover {
+form input[type="submit"].add-task:hover {
     background-color: var(--secondary-background-color);
 }
 
@@ -163,7 +165,7 @@ form button.add-task:hover {
 
     & p.task-date {
         margin-bottom: 5px;
-        font-size: 0.7rem;
+        font-size: 0.76rem;
     }
 
     & textarea.task-name {
@@ -294,6 +296,6 @@ body>footer>small {
     }
 
     .updaters button {
-        font-size: 0.6rem;
+        font-size: 0.75rem;
     }
 }

@@ -4,6 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description"
+        content="A clean, easy-to-use to-do list web app to organize your tasks. Add and track your tasks effortlessly in the browser.">
+
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://ronenn0.github.io/to-do-list/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ronenn0.github.io/to-do-list/">
+    <meta property="og:title" content="Simple To-Do List App">
+    <meta property="og:description"
+        content="A clean, browser-based to-do list app that helps you stay on top of your tasks.">
+    <!-- Optionally add: og:image -->
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://ronenn0.github.io/to-do-list/">
+    <meta name="twitter:title" content="Simple To-Do List App">
+    <meta name="twitter:description" content="A clean, browser-based to-do list app that keeps your tasks organized.">
+
     <title>Task Manager</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
@@ -18,12 +39,11 @@
             <input type="text" id="task-input" aria-label="new task's input" placeholder="Add a new task..."
                 maxlength="50">
             <input type="date" aria-label="new task's date" id="task-date">
-            <input type="submit" aria-label="Add task button" class="add-task">Add</input>
+            <input type="submit" aria-label="Add task button" class="add-task" value="Add">
         </form>
         <div class="message-container">
             <p id="message"></p>
         </div>
-
 
         <div class="filters">
             <button class="all">All</button>
