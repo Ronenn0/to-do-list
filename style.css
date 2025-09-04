@@ -29,7 +29,7 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: var(--primary-background-color);
-    padding-top: 20px;
+    padding: 20px 0px;
 }
 
 
@@ -41,7 +41,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 95vw;
+    width: 93vw;
     max-width: 1100px;
 }
 
@@ -268,7 +268,7 @@ body>footer {
     padding: 20px;
     border-top: 1px solid black;
     background-color: white;
-    width: 95vw;
+    width: 93vw;
     max-width: 1100px;
     overflow: hidden;
 }
@@ -297,5 +297,6 @@ body>footer>small {
 
     .updaters button {
         font-size: 0.75rem;
+        white-space: wrap;
     }
 }
