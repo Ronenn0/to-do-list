@@ -50,8 +50,9 @@ class Task {
      */
     complete() {
         this.isCompleted = !this.isCompleted;
+
         Task.saveTasks();
-        message(this.isCompleted ? 'Task has been marked as completed.' : 'Task has been activated!', 2);
+        message(this.isCompleted ? 'Task has been marked as completed.' : 'Task has been activated back.', 2);
     }
 
     /**
@@ -82,7 +83,9 @@ class Task {
      * Marks a task as complete and updates the UI.
      */
     static completeTask(btn) {
-        const id = btn.parentElement.parentElement.dataset.id;
+        const id = btn.dataset.id;
+        // const li = document.querySelector(`li[data-id="${id}"]`);
+
         Task.findByLiId(id).complete();
         renderTasks();
     }
@@ -93,8 +96,23 @@ class Task {
      * Deletes a task and updates the UI.
      */
     static deleteTask(btn) {
-        const id = btn.parentElement.parentElement.dataset.id;
-        Task.findByLiId(id).deleteTask();
+
+        const id = btn.dataset.id;
+        const taskToDelete = Task.findByLiId(id);
+
+        const confirmSentence = `
+        WARNING! You are trying to DELETE this task:
+        ------------------------------------
+            - Description: ${taskToDelete.name},
+                - Deadline: ${taskToDelete.date},
+                    - ${taskToDelete.isCompleted ? 'Completed' : 'Still not completed'}.
+        ------------------------------------
+        This action CAN NOT BE UNDO.
+        Do you wish to continue?`;
+        if (!confirm(confirmSentence)) {
+            return;
+        }
+        taskToDelete.deleteTask();
         renderTasks();
     }
 
@@ -196,17 +214,25 @@ function renderTasks(filterByDate) {
         };
 
         HTML += `
-        <li data-id="${task.id}">
-                <div class="left-side">
-                    <p class="task-date">${task.date.split('-').reverse().join('/')}</p>
-                    <textarea aria-label="Task" class="task-name ${completedClassName}" readonly>${task.name}</textarea>
-                </div>
-                <div class="updaters">
-                <button class="complete ${buttonsState.complete}" onclick="Task.completeTask(this)">Mark as completed ✓</button>
-                <button class="uncomplete ${buttonsState.activate}" onclick="Task.completeTask(this)">Activate back 🔘</button>
-                <button class="delete" onclick="Task.deleteTask(this)" >Delete 🗑️</button>
-                </div>
-            </li>
+        <li data-id="${task.id}" ${task.isCompleted ? "class='completed_li_design'" : ""}">
+            <div class="left-side">
+                <p class="task-date" data-id="${task.id}">
+                    Deadline - ${task.date.split('-').reverse().join('/')}
+                </p>
+                <textarea class="task-name ${completedClassName}" data-id="${task.id}" readonly>${task.name}</textarea>
+            </div>
+            <div class="updaters">
+                <button class="complete ${buttonsState.complete}" onclick="Task.completeTask(this)" data-id="${task.id}">
+                    Mark as completed ✓
+                </button>
+                <button class="uncomplete ${buttonsState.activate}" onclick="Task.completeTask(this)" data-id="${task.id}">
+                    Re-open task 🔄
+                </button>
+                <button class="delete" onclick="Task.deleteTask(this)" data-id="${task.id}">
+                    Delete 🗑️
+                </button>
+            </div>
+        </li>
         `;
     });
     //no results
@@ -247,7 +273,14 @@ function addFormEventListener() {
                 return;
             }
         }
-
+        const confirmSentence = `
+        Trying to add a new task:
+        Description: ${task}.
+        Due date: ${date}
+        Do you wish to continue?`;
+        if (!confirm(confirmSentence)) {
+            return;
+        }
         Task.addTask(task, date);
         taskInput.value = ''; // ✅ clear input
         taskDate.value = '';
@@ -270,9 +303,17 @@ function addFilterEventListeners() {
     filterButtons.forEach((button, index) => {
         button.addEventListener('click', () => {
             filter = index;
-            message(`Rendering ${filter == 0 ? 'All' : filter == 1 ? 'only activated' : filter == 2 ? 'only completed' : ''} tasks!`);
+            message(`Rendering ${filter == 0 ? 'All' : filter == 1 ? 'incomplete' : filter == 2 ? 'completed' : ''} tasks!`);
             renderTasks();
         });
+    });
+}
+
+function addLoadEventListener() {
+    window.addEventListener('load', () => {
+        const todayDateH2 = document.querySelector('.today-date');
+        const today = new Date().toISOString().split('T')[0].split('-').reverse().join('/');
+        todayDateH2.textContent = `Today's Date: ${today}`;
     });
 }
 
@@ -298,13 +339,14 @@ async function fetchInitialTasks(amount = 5) {
     });
 }
 
+let messageTimeoutId;
 let timerMS = 0;
+let removingMessage = false;
 const messageContainer = document.querySelector('.message-container');
 /**
  * 
  * @param {string} messageText 
- * @param {number} type -> 1: normal, 2: success, 3: error message\
- * pops in a message with a color specified to the message type.
+ * @param {number} type -> 1: normal, 2: success, 3: error message
  */
 function message(messageText, type = 1) {
     const color = type == 1 ? 'black' : type == 2 ? 'green' : 'red';
@@ -320,10 +362,6 @@ function message(messageText, type = 1) {
     }
 }
 
-/**
- * 
- * pops-out the message
- */
 async function removeMessage() {
     if (timerMS <= 0) {
         messageContainer.style.transform = 'translateY(-100%)';
@@ -334,20 +372,12 @@ async function removeMessage() {
     removeMessage();
 }
 
-/**
- * 
- * @param {number} ms -> miliseconds
- * @returns a promise that takes ms miliseconds to finish
- * the point of this function is to wait ms miliseconds - sleep.
- */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-/**
- * Initializes the script
- */
 async function start() {
+    addLoadEventListener();
     await getTasks();
     renderTasks();
     addFormEventListener();
