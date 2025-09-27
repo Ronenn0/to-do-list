@@ -1,11 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
-    --primary-background-color: #6d6d6d;
-    --secondary-background-color: #af8f54;
-    --third-background-color: #60b0cf45;
+    --primary-background-color: #e8f1f8;
+    /* very light blue background */
+    --secondary-background-color: #cfdfea;
+    /* soft pastel blue for cards */
+    --third-background-color: #a9c6db;
+    /* slightly stronger blue for accents */
+    --hover-background-color: #6d6d6d63;
     --primary-color: black;
-    --secondary-color: #1d462e;
+    --secondary-color: #3d7e97;
+    --uncomplete-button-main-color: #3f3f3f;
+    --dark-mode-i-background-color: white;
 }
 
 
@@ -13,7 +19,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: monospace;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 1rem;
 }
 
@@ -29,41 +35,116 @@ body {
     align-items: center;
     background-color: var(--primary-background-color);
     padding-top: 20px;
+    color: var(--primary-color);
 }
 
+body.dark-mode {
+    --primary-background-color: #2c2c2c;
+    --secondary-background-color: #3f3f3f;
+    --primary-color: white;
+    --secondary-color: #daf5ff;
+    --uncomplete-button-main-color: #adadad;
+    --third-background-color: #4a4a4a;
+    --dark-mode-i-background-color: var(--third-background-color)
+}
+
+body.dark-mode #task-list li,
+body.dark-mode form #task-input,
+body.dark-mode .filters button,
+body.dark-mode .updaters button {
+    background-color: var(--third-background-color);
+}
+
+body.dark-mode textarea,
+body.dark-mode p {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode form #task-input {
+    border-color: #666;
+}
 
 main {
     padding: 20px;
     background-color: #fff;
-    box-shadow: 0 10px 40px var(--secondary-color);
-    color: var(--primary-color);
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+body>main,
+body>footer,
+body>header {
     width: 95vw;
     max-width: 1100px;
+    background-color: var(--secondary-background-color);
 }
 
 body header {
     align-self: center;
-    margin-bottom: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 95vw;
-    max-width: 1100px;
+
     justify-content: space-between;
 }
 
-body header * {
+body>header *,
+body>header * {
     font-size: 1.7rem;
-    color: white;
+    color: var(--primary-color);
     white-space: nowrap;
 }
 
-body header h2 {}
+body>header>.right-side {
+    display: flex;
+    gap: 13px;
+    align-items: center;
+}
 
-form {
+body>header .dark-mode-button {
+    background-color: var(--dark-mode-i-background-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+}
+
+body>header .dark-mode-button:hover {
+    transform: translateY(-5px);
+}
+
+body>header i {
+    font-size: 2rem;
+
+    &.fa-moon {
+        color: #6C63FF;
+        display: block;
+    }
+
+    &.fa-sun {
+        color: #FFD43B;
+        display: none;
+    }
+}
+
+body.dark-mode>header i {
+    &.fa-moon {
+        display: none;
+    }
+
+    &.fa-sun {
+        display: block;
+    }
+}
+
+main form {
     display: flex;
     justify-content: space-between;
     column-gap: 5px;
@@ -97,14 +178,18 @@ form input.add-task {
     cursor: pointer;
     flex: 0.1;
     color: white;
-    background-color: var(--primary-background-color);
-    border: 1px solid var(--primary-background-color);
+    background-color: var(--third-background-color);
+    border: 1px solid var(--third-background-color);
     border-radius: 4px;
     transition: background-color 0.1s;
 }
 
 form input.add-task:hover {
-    background-color: var(--secondary-background-color);
+    background-color: var(--secondary-color);
+}
+
+body.dark-mode form input.add-task:hover {
+    background-color: var(--primary-background-color);
 }
 
 .message-container {
@@ -142,14 +227,14 @@ form input.add-task:hover {
 }
 
 .filters button:hover {
-    background-color: var(--secondary-background-color);
+    background-color: var(--hover-background-color);
 
     color: white;
 }
 
 .filters button.picked {
     background-color: var(--primary-background-color);
-    color: white;
+    color: var(--primary-color);
 }
 
 #task-list {
@@ -194,7 +279,7 @@ form input.add-task:hover {
 
     & textarea,
     & p {
-        color: black;
+        color: var(--primary-color);
         text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
     }
 
@@ -272,13 +357,13 @@ form input.add-task:hover {
     }
 
     & .uncomplete {
-        --main: #3f3f3f;
+        --main: var(--uncomplete-button-main-color);
     }
 }
 
 input.sort-by-date {
-    background-color: white;
-    color: var(--primary-background-color);
+    background-color: var(--primary-background-color);
+    color: var(--primary-color);
     border: 1px solid var(--primary-background-color);
     padding: 4px 8px;
     border-radius: 5px;
@@ -288,7 +373,7 @@ input.sort-by-date {
 
 input.sort-by-date:hover {
     background-color: var(--primary-background-color);
-    color: white;
+    color: var(--primary-color);
     border: 1px solid white;
     transform: translateY(-3px);
 }
@@ -300,34 +385,32 @@ input.sort-by-date:active {
 body>footer {
     display: flex;
     padding: 20px;
-    border-top: 1px solid black;
-    background-color: white;
-    width: 95vw;
-    max-width: 1100px;
     overflow: hidden;
+    color: var(--primary-color);
 }
 
 body>footer>small {
+    white-space: nowrap;
+    font-size: 0.7rem;
     position: relative;
-    animation: move 12s linear infinite;
-    text-align: center;
+    animation: move 18s linear infinite;
 }
 
 @keyframes move {
-    to {
-        transform: translateX(-100%);
-        left: 0;
+    from {
+        left: 115%;
+        transform: translateX(0);
     }
 
-    from {
-        left: 100%;
-        transform: translateX(0);
+    to {
+        transform: translateX(-100%);
+        left: -15%;
     }
 }
 
 @media (max-width: 600px) {
     * {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .updaters button {
@@ -338,11 +421,16 @@ body>footer>small {
 @media (max-width: 800px) {
     body header {
         flex-direction: column;
-        gap: 10px;
+        gap: 6px;
+    }
+
+    .right-side {
+        flex-direction: column;
+        gap: 0px;
     }
 
     body header * {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 }
 

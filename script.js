@@ -314,6 +314,14 @@ function addLoadEventListener() {
         const todayDateH2 = document.querySelector('.today-date');
         const today = new Date().toISOString().split('T')[0].split('-').reverse().join('/');
         todayDateH2.textContent = `Today's Date: ${today}`;
+        addDarkModeFunctionality();
+    });
+}
+
+function addDarkModeFunctionality() {
+    const darkModeButton = document.querySelector('.dark-mode-button');
+    darkModeButton.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode')
     });
 }
 

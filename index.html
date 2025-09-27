@@ -17,7 +17,6 @@
     <meta property="og:title" content="Simple To-Do List App">
     <meta property="og:description"
         content="A clean, browser-based to-do list app that helps you stay on top of your tasks.">
-    <!-- Optionally add: og:image -->
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
@@ -26,6 +25,10 @@
     <meta name="twitter:description" content="A clean, browser-based to-do list app that keeps your tasks organized.">
 
     <title>Task Manager</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
     <link rel="icon" href="./main-icon.png">
@@ -34,7 +37,14 @@
 <body>
     <header>
         <h1>📝 Tasks Manager</h1>
-        <h2 class="today-date"></h2>
+        <div class="right-side">
+            <h2 class="today-date"></h2>
+            <button class="dark-mode-button">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+
+            </button>
+        </div>
     </header>
     <main>
         <form id="task-form">
@@ -65,7 +75,7 @@
         </ul>
     </main>
     <footer>
-        <small>Organize • Focus • Accomplish – Ronen’s Task Manager<br>
+        <small>Organize • Focus • Accomplish – Ronen’s Task Manager
             © 2025 Ronen Azam. All rights reserved.</small>
     </footer>
 </body>
