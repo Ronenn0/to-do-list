@@ -1,4 +1,3 @@
-
 let filter = 0; // current filter 0, 1, 2
 let filterByDate = false;
 let tasks = [];
@@ -315,10 +314,17 @@ function addFilterEventListeners() {
     });
 }
 
+/**
+ * Sets up event listeners that are executed when the window loads.
+ * Handles the following initialization tasks:
+ * - Sets up welcome screen exit functionality
+ * - Initializes username input and validation
+ * - Checks for existing user and auto-login if found
+ * - Sets today's date display
+ * - Initializes dark mode toggle functionality
+ */
 function addLoadEventListener() {
     window.addEventListener('load', () => {
-
-
         //exit screen
         const exitScreenButton = document.querySelector('.welcome-screen button.exit-screen');
         exitScreenButton.addEventListener('click', () => {
@@ -344,6 +350,9 @@ function addLoadEventListener() {
     });
 }
 
+/**
+ * Enables toggling the dark mode by clicking on the dark mode button.
+ */
 function addDarkModeFunctionality() {
     const darkModeButton = document.querySelector('.dark-mode-button');
     darkModeButton.addEventListener('click', () => {
@@ -351,6 +360,9 @@ function addDarkModeFunctionality() {
     });
 }
 
+/**
+ * Handles clicking on the start journey button thats found on the first welcome screen.
+ */
 function startJourneyFunctionality() {
     const startButton = document.querySelector('.welcome-screen .start-btn');
     const nameInput = document.querySelector('.welcome-screen .name-input');
@@ -367,6 +379,10 @@ function startJourneyFunctionality() {
     });
 }
 
+/**
+ * Gets the username and displays it where it should be displayed
+ * Plus it displays a random motivation message
+ */
 function login() {
     username = getName();
     const usernameSpan = document.querySelector('body>header .username');
@@ -375,6 +391,9 @@ function login() {
     displayMotivation();
 }
 
+/**
+ * Picks a random motivation message and displays the welcome screen.
+ */
 function displayMotivation() {
     const heroMessages = [
         "🚀 Every big goal starts with one small task.",
@@ -403,10 +422,19 @@ function displayMotivation() {
     welcomeMessage2.textContent = randomMessage;
 }
 
+/**
+ * 
+ * @returns the saved username from the localStorage
+ */
 function getName() {
     return JSON.parse(localStorage.getItem('name'));
 }
 
+/**
+ * 
+ * @param {string} name - username
+ * Saves the username as name in the localStorage.
+ */
 function setName(name) {
     localStorage.setItem('name', JSON.stringify(name));
 }
