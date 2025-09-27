@@ -331,14 +331,23 @@ function addLoadEventListener() {
             document.body.classList.remove('welcoming');
         });
 
-        //username
+        //welcome screen
         startJourneyFunctionality();
 
+        //username
         let temp_username = getName();
         if (temp_username) {
             document.body.classList.remove('asking-for-name');
             login();
         }
+
+        //Pressing Enter after entering the username
+        const usernameInput = document.querySelector('.name-input');
+        usernameInput.addEventListener('keydown', e => {
+            if (e.key == 'Enter') {
+                document.querySelector('.start-btn').onclick();
+            }
+        });
 
         //today date
         const todayDateH2 = document.querySelector('.today-date');
@@ -366,7 +375,7 @@ function addDarkModeFunctionality() {
 function startJourneyFunctionality() {
     const startButton = document.querySelector('.welcome-screen .start-btn');
     const nameInput = document.querySelector('.welcome-screen .name-input');
-    startButton.addEventListener('click', () => {
+    startButton.onclick = function () {
         const name = nameInput.value;
         if (name.length == 0) {
             return alert('Name is required.');
@@ -376,7 +385,7 @@ function startJourneyFunctionality() {
             setName(name);
             login();
         }
-    });
+    }
 }
 
 /**
@@ -395,31 +404,40 @@ function login() {
  * Picks a random motivation message and displays the welcome screen.
  */
 function displayMotivation() {
-    const heroMessages = [
-        "🚀 Every big goal starts with one small task.",
-        "🌟 Your future self will thank you for starting today.",
-        "💡 Progress, not perfection — one step at a time.",
-        "🔥 Small wins every day lead to massive success.",
-        "✅ The best way to get things done is to begin.",
-        "🌈 Dreams become reality when you turn them into tasks.",
-        "💪 Consistency beats motivation — show up today.",
-        "✨ You don’t need to be great to start, but you need to start to be great.",
-        "📅 Today is a fresh start — make it count.",
-        "🎯 A little progress each day adds up to big results.",
-        "⚡ Motivation gets you started, habits keep you going.",
-        "🌍 The secret of getting ahead is getting started.",
-        "🕒 Don’t wait for the perfect time. Start now.",
-        "🏆 Success is built on daily actions, not wishes.",
-        "📌 Organize today, achieve tomorrow."
-    ];
-    const randomIndex = Math.floor(Math.random() * heroMessages.length);
-    const randomMessage = heroMessages[randomIndex];
+
+    const lastLoginDate = JSON.parse(localStorage.getItem('last_login_date'));
+    const todayDate = new Date().toISOString().split("T")[0];
+    let randomMessage = JSON.parse(localStorage.getItem('message_of_the_day'));
+    if (lastLoginDate != todayDate || !randomMessage) {
+        const heroMessages = [
+            "🚀 Every big goal starts with one small task.",
+            "🌟 Your future self will thank you for starting today.",
+            "💡 Progress, not perfection — one step at a time.",
+            "🔥 Small wins every day lead to massive success.",
+            "✅ The best way to get things done is to begin.",
+            "🌈 Dreams become reality when you turn them into tasks.",
+            "💪 Consistency beats motivation — show up today.",
+            "✨ You don’t need to be great to start, but you need to start to be great.",
+            "📅 Today is a fresh start — make it count.",
+            "🎯 A little progress each day adds up to big results.",
+            "⚡ Motivation gets you started, habits keep you going.",
+            "🌍 The secret of getting ahead is getting started.",
+            "🕒 Don’t wait for the perfect time. Start now.",
+            "🏆 Success is built on daily actions, not wishes.",
+            "📌 Organize today, achieve tomorrow."
+        ];
+        const randomIndex = Math.floor(Math.random() * heroMessages.length);
+        randomMessage = heroMessages[randomIndex];
+        localStorage.setItem('message_of_the_day', JSON.stringify(randomMessage));
+    }
     const welcomeMessageHeader = document.querySelector('.welcome-screen .welcome-message-header');
     const welcomeMessage1 = document.querySelector('.welcome-screen .welcome-message-1');
     const welcomeMessage2 = document.querySelector('.welcome-screen .welcome-message-2');
     welcomeMessageHeader.textContent = `Welcome ${username}!`;
     welcomeMessage1.textContent = "Message of the day";
     welcomeMessage2.textContent = randomMessage;
+
+    localStorage.setItem('last_login_date', JSON.stringify(todayDate));
 }
 
 /**
