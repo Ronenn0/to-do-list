@@ -2,6 +2,7 @@
 let filter = 0; // current filter 0, 1, 2
 let filterByDate = false;
 let tasks = [];
+let username = null;
 const filterButtons = document.querySelectorAll('.filters button');
 
 /**
@@ -126,11 +127,11 @@ class Task {
  */
 async function getTasks() {
     if (!localStorage.getItem('tasks')) {
-        tasks = await fetchInitialTasks();
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        return;
+        const t = await fetchInitialTasks();
+        localStorage.setItem('tasks', JSON.stringify(t));
+        return t;
     }
-    tasks = JSON.parse(localStorage.getItem('tasks')).map(task => new Task(task));
+    return JSON.parse(localStorage.getItem('tasks')).map(task => new Task(task));
 }
 
 /**
@@ -311,9 +312,28 @@ function addFilterEventListeners() {
 
 function addLoadEventListener() {
     window.addEventListener('load', () => {
+
+        //exit screen
+        const exitScreenButton = document.querySelector('.welcome-screen button.exit-screen');
+        exitScreenButton.addEventListener('click', () => {
+            document.body.classList.remove('welcoming');
+        });
+
+        //username
+        startJourneyFunctionality();
+
+        let temp_username = getName();
+        if (temp_username) {
+            document.body.classList.remove('asking-for-name');
+            login();
+        }
+
+        //today date
         const todayDateH2 = document.querySelector('.today-date');
         const today = new Date().toISOString().split('T')[0].split('-').reverse().join('/');
         todayDateH2.textContent = `Today's Date: ${today}`;
+
+        //dark mode
         addDarkModeFunctionality();
     });
 }
@@ -323,6 +343,66 @@ function addDarkModeFunctionality() {
     darkModeButton.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode')
     });
+}
+
+function startJourneyFunctionality() {
+    const startButton = document.querySelector('.welcome-screen .start-btn');
+    const nameInput = document.querySelector('.welcome-screen .name-input');
+    startButton.addEventListener('click', () => {
+        const name = nameInput.value;
+        if (name.length == 0) {
+            return alert('Name is required.');
+        }
+        if (confirm(`Your name is ${name},
+            is that correct?`)) {
+            setName(name);
+            login();
+        }
+    });
+}
+
+function login() {
+    username = getName();
+    const usernameSpan = document.querySelector('body>header .username');
+    usernameSpan.textContent = `${username}'s`;
+    document.body.classList.remove('asking-for-name');
+    displayMotivation();
+}
+
+function displayMotivation() {
+    const heroMessages = [
+        "🚀 Every big goal starts with one small task.",
+        "🌟 Your future self will thank you for starting today.",
+        "💡 Progress, not perfection — one step at a time.",
+        "🔥 Small wins every day lead to massive success.",
+        "✅ The best way to get things done is to begin.",
+        "🌈 Dreams become reality when you turn them into tasks.",
+        "💪 Consistency beats motivation — show up today.",
+        "✨ You don’t need to be great to start, but you need to start to be great.",
+        "📅 Today is a fresh start — make it count.",
+        "🎯 A little progress each day adds up to big results.",
+        "⚡ Motivation gets you started, habits keep you going.",
+        "🌍 The secret of getting ahead is getting started.",
+        "🕒 Don’t wait for the perfect time. Start now.",
+        "🏆 Success is built on daily actions, not wishes.",
+        "📌 Organize today, achieve tomorrow."
+    ];
+    const randomIndex = Math.floor(Math.random() * heroMessages.length);
+    const randomMessage = heroMessages[randomIndex];
+    const welcomeMessageHeader = document.querySelector('.welcome-screen .welcome-message-header');
+    const welcomeMessage1 = document.querySelector('.welcome-screen .welcome-message-1');
+    const welcomeMessage2 = document.querySelector('.welcome-screen .welcome-message-2');
+    welcomeMessageHeader.textContent = `Welcome ${username}!`;
+    welcomeMessage1.textContent = "Message of the day";
+    welcomeMessage2.textContent = randomMessage;
+}
+
+function getName() {
+    return JSON.parse(localStorage.getItem('name'));
+}
+
+function setName(name) {
+    localStorage.setItem('name', JSON.stringify(name));
 }
 
 /**
@@ -386,7 +466,7 @@ function sleep(ms) {
 
 async function start() {
     addLoadEventListener();
-    await getTasks();
+    tasks = await getTasks();
     renderTasks();
     addFormEventListener();
     addFilterEventListeners();

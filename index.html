@@ -34,18 +34,30 @@
     <link rel="icon" href="./main-icon.png">
 </head>
 
-<body>
+<body class="asking-for-name welcoming">
     <header>
-        <h1>📝 Tasks Manager</h1>
+        <h1>📝 <span class="username"></span> Tasks Manager</h1>
         <div class="right-side">
             <h2 class="today-date"></h2>
             <button class="dark-mode-button">
                 <i class="fas fa-moon"></i>
                 <i class="fas fa-sun"></i>
-
             </button>
         </div>
     </header>
+    <div class="welcome-screen">
+        <h1 class="welcome-message-header">🌟 Let’s make today productive!</h1>
+        <p class="welcome-message-1">We’ll personalize your space just for you.</p>
+        <p class="welcome-message-2">Type your name and let’s begin 🚀</p>
+        <button class="exit-screen">
+            <!-- <i class="fas fa-times"></i> -->
+            Let’s go 🚀
+        </button>
+
+        <input type="text" aria-label="user name" placeholder="Enter your name..." class="name-input for-name"
+            maxlength="30" />
+        <button class="start-btn for-name">Start My Journey ✅</button>
+    </div>
     <main>
         <form id="task-form">
             <input type="text" id="task-input" placeholder="Describe the task..." maxlength="50" />

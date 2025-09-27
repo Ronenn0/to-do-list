@@ -396,6 +396,136 @@ body>footer>small {
     animation: move 18s linear infinite;
 }
 
+body.asking-for-name,
+body.welcoming {
+    overflow: hidden;
+}
+
+body.asking-for-name *,
+body.welcoming * {
+    pointer-events: none;
+}
+
+body.asking-for-name .welcome-screen *,
+body.welcoming .welcome-screen * {
+    pointer-events: auto;
+}
+
+body.welcoming .welcome-screen {
+    display: flex;
+}
+
+.welcome-screen {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.9);
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    color: white;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
+
+    & h1,
+    & p {
+        font-size: 1.4rem;
+    }
+
+    & input[type="text"] {
+        margin: 15px 0;
+        width: 80vw;
+        padding: 5px 10px;
+        font-size: 1.4em;
+        max-width: 500px;
+    }
+
+    & button.start-btn {
+        width: 50vw;
+        max-width: 400px;
+        padding: 10px 0;
+        font-size: 1.3rem;
+        cursor: pointer;
+        background-color: white;
+        color: rgba(0, 0, 0, 0.784);
+        border: 1px solid white;
+        border-radius: 7px;
+        transition: all 0.1s;
+    }
+
+    & button.start-btn:hover {
+        color: white;
+        background-color: rgba(0, 0, 0, 0.784);
+        scale: 1.02;
+    }
+
+    & button.start-btn:active {
+        scale: 1.1;
+    }
+
+    & button.exit-screen {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        color: black;
+        font-weight: bold;
+        /* margin-left: calc(min(100vw, 700px) - 150px); */
+        width: 80vw;
+        max-width: 800px;
+
+        background-color: rgba(255, 255, 255, 1);
+        white-space: nowrap;
+        padding: 10px 15px;
+        font-size: 1.3em;
+        border-radius: 2px;
+        transition: all 0.15s;
+
+        &:hover {
+            scale: 1.05;
+        }
+
+        &:active {
+            scale: 0.8;
+        }
+
+
+        & i.fa-times {
+            font-size: 1.3rem;
+            background-color: rgba(240, 0, 0, 0.6);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.15s;
+        }
+
+        &:hover i.fa-times {
+            scale: 0.8;
+        }
+    }
+}
+
+body .welcome-screen .for-name {
+    display: none;
+}
+
+body.asking-for-name .welcome-screen .for-name {
+    display: block;
+}
+
+body.asking-for-name .welcome-screen button.exit-screen {
+    display: none;
+}
+
+
 @keyframes move {
     from {
         left: 115%;
@@ -418,7 +548,7 @@ body>footer>small {
     }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
     body header {
         flex-direction: column;
         gap: 6px;
