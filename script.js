@@ -220,7 +220,7 @@ function renderTasks(filterByDate) {
                 <p class="task-date" data-id="${task.id}">
                     Deadline - ${task.date.split('-').reverse().join('/')}
                 </p>
-                <textarea class="task-name ${completedClassName}" data-id="${task.id}" readonly>${task.name}</textarea>
+                <textarea class="task-name ${completedClassName}" data-id="${task.id}" aria-label="Task description" readonly>${task.name}</textarea>
             </div>
             <div class="updaters">
                 <button class="complete ${buttonsState.complete}" onclick="Task.completeTask(this)" data-id="${task.id}">
@@ -242,7 +242,12 @@ function renderTasks(filterByDate) {
         <small>Found no tasks</small>
         `;
     } else tasksContainer.innerHTML = HTML;
-
+    // document.querySelectorAll('.task-name').forEach(textarea => {
+    //     textarea.addEventListener("input", () => {
+    //         textarea.style.height = "auto"; // reset height
+    //         textarea.style.height = textarea.scrollHeight + "px"; // set new height
+    //     });
+    // });
 };
 
 /**
@@ -312,6 +317,7 @@ function addFilterEventListeners() {
 
 function addLoadEventListener() {
     window.addEventListener('load', () => {
+
 
         //exit screen
         const exitScreenButton = document.querySelector('.welcome-screen button.exit-screen');
