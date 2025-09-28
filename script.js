@@ -107,7 +107,7 @@ class Task {
                 - Deadline: ${taskToDelete.date},
                     - ${taskToDelete.isCompleted ? 'Completed' : 'Still not completed'}.
         ------------------------------------
-        This action CAN NOT BE UNDO.
+        This action CAN NOT BE UNDONE!.
         Do you wish to continue?`;
         if (!confirm(confirmSentence)) {
             return;
