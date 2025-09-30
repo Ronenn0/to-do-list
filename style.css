@@ -1,10 +1,7 @@
 :root {
     --primary-background-color: #e8f1f8;
-    /* very light blue background */
     --secondary-background-color: #cfdfea;
-    /* soft pastel blue for cards */
     --third-background-color: #a9c6db;
-    /* slightly stronger blue for accents */
     --hover-background-color: #6d6d6d63;
     --primary-color: black;
     --secondary-color: #3d7e97;
@@ -544,13 +541,6 @@ body.asking-for-name .welcome-screen button.exit-screen {
         transform: translateX(-100%);
         left: -15%;
     }
-}
-
-@media (max-width: 600px) {
-
-    /* .updaters button {
-        font-size: 0.7rem;
-    } */
 }
 
 @media (max-width: 1000px) {
