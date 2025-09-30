@@ -1,62 +1,106 @@
-# 📝 To-Do List App
+# ✅ To-Do List Web App
 
-A clean, interactive, and responsive To-Do List web app that allows users to add, complete, activate, delete, and filter their tasks. Tasks persist using the browser's `localStorage`.
+A modern, responsive, and interactive **To-Do List** web application.  
+Easily manage your daily tasks with add, complete, filter, delete, and personalization features — with everything saved directly in your browser.
+
+---
 
 ## 🚀 Features
 
-- ✅ Add new tasks
-- 🔁 Toggle task completion status
-- 🗑️ Delete tasks
-- 🧠 Filters:
-  - **All** tasks
-  - **Activated** (incomplete) tasks
-  - **Completed** tasks
-- 💾 Persistent storage using `localStorage`
-- 💡 Live updates with no page reload
-- 📱 Fully responsive design
+- ✨ Add new tasks instantly  
+- 🔄 Mark tasks as completed / uncompleted  
+- 🗑️ Delete tasks with confirmation warning (prevents accidental deletion)  
+- 🎯 Filter tasks by:
+  - All tasks  
+  - Active (incomplete)  
+  - Completed  
+- 💾 Automatic persistence with **localStorage**  
+- 📱 Responsive design for desktop and mobile  
+- 🌙 **Dark / Light mode toggle** for better usability  
+- 👤 **Personalization** – enter your name once, and it is displayed in the app  
+- 💬 **Motivational popup / Message of the day** shown on startup  
+- ⚡ Real-time updates (no page reloads needed)
+
+---
 
 ## 🧱 Technologies Used
 
-- **HTML5** – Semantic layout
-- **CSS3** – Responsive design with custom properties (CSS variables)
-- **JavaScript (ES6)** – OOP with class-based logic and DOM manipulation
-- **localStorage** – Data persistence in the browser
+- **HTML5** – Semantic and accessible markup  
+- **CSS3** – Responsive design with variables and modern layout techniques  
+- **JavaScript (ES6)** – Class-based structure, DOM manipulation, and event handling  
+- **localStorage** – Persistent client-side storage  
+
+---
 
 ## 📂 Project Structure
 
 ```
-📁 project/
-├── index.html       # Main HTML structure
-├── style.css        # Styling and responsive layout
-└── script.js        # App logic and functionality
+to-do-list-main/
+│── index.html       # Main HTML file
+│── style.css        # Styles and responsive design
+│── script.js        # App logic and functionality
+│── main-icon.png    # App icon
+│── robots.txt       # Robots instructions for search engines
+│── sitemap.xml      # Sitemap for SEO
+└── README.md        # Documentation
 ```
-
-## 🧠 How It Works
-
-1. The user adds a task via the input field and submits the form.
-2. The task is added to an in-memory array and stored in `localStorage`.
-3. Tasks are displayed with buttons to complete, activate, or delete.
-4. Filter buttons change the visible task set based on completion status.
-5. All changes update both the UI and `localStorage`.
-
-## 🖥️ Live Preview
-
-To run locally:
-1. Clone or download this repo.
-2. Open `index.html` in a browser.
-
-No server needed — it's 100% front-end.
-
-## 📸 Screenshot
-
-<img width="806" height="442" alt="image" src="https://github.com/user-attachments/assets/35394a07-bbad-4185-8700-c003fc4d97b0" />
-
-
-## ✍️ Author
-
-**Ronen Azam**  
-Built as a clean and modern web development project with an OOP-based JavaScript approach.
 
 ---
 
-> Built with ❤️ to stay organized and productive.
+## 📸 Screenshots
+
+### 🗑️ Delete Confirmation  
+![Delete Confirmation]
+(sandbox:/mnt/data/81FED41A-4B18-4A38-B9F5-77DBB5DF8417.jpeg)
+
+### 📋 Task List (Dark Mode)  
+![Dark Mode](sandbox:/mnt/data/D7499C0C-9524-4FD0-A731-F80AAE1E2DA0.jpeg)
+
+### 🌙 Light Mode  
+![Light Mode](sandbox:/mnt/data/80F4A4C0-FCD5-4B7C-AD0F-8F602E123B4C.jpeg)
+
+### 💬 Motivational Popup / Message of the Day  
+![Motivational Popup](sandbox:/mnt/data/37037364-8BF1-41AE-B813-6E27EB07FB10.jpeg)
+
+---
+
+## ⚙️ How It Works
+
+1. On first load, enter your **name** — the app will personalize messages for you.  
+2. A **motivational popup** with the message of the day is displayed.  
+3. Enter a new task in the input field and press **Enter**.  
+4. Use the **checkbox** to mark it completed or uncompleted.  
+5. Use the **delete button** to remove a task (a confirmation warning will appear).  
+6. Switch between filters (**All / Active / Completed**) to view your tasks.  
+7. Toggle between **dark mode** 🌙 and **light mode** ☀️ anytime.  
+8. Tasks and preferences are saved automatically in your browser and remain after refreshing or closing the page.  
+
+---
+
+## 🚀 Getting Started
+
+1. Clone this repository:  
+   ```bash
+   git clone https://github.com/your-username/to-do-list-main.git
+   ```
+
+2. Open the project folder and run `index.html` in your browser.
+
+That’s it! 🎉
+
+---
+
+## 📜 License
+
+This project is open-source and available under the **MIT License**.  
+Feel free to use, modify, and share.
+
+---
+
+## 👨‍💻 Author
+
+Developed by **Ronen Azam**  
+Portfolio: [ronenn0.github.io/protfolio-project](https://ronenn0.github.io/protfolio-project)  
+GitHub: [github.com/ronenn0](https://github.com/ronenn0)  
+
+---
