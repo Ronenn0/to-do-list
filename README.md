@@ -47,23 +47,6 @@ to-do-list-main/
 
 ---
 
-## 📸 Screenshots
-
-### 🗑️ Delete Confirmation  
-![Delete Confirmation]
-(sandbox:/mnt/data/81FED41A-4B18-4A38-B9F5-77DBB5DF8417.jpeg)
-
-### 📋 Task List (Dark Mode)  
-![Dark Mode](sandbox:/mnt/data/D7499C0C-9524-4FD0-A731-F80AAE1E2DA0.jpeg)
-
-### 🌙 Light Mode  
-![Light Mode](sandbox:/mnt/data/80F4A4C0-FCD5-4B7C-AD0F-8F602E123B4C.jpeg)
-
-### 💬 Motivational Popup / Message of the Day  
-![Motivational Popup](sandbox:/mnt/data/37037364-8BF1-41AE-B813-6E27EB07FB10.jpeg)
-
----
-
 ## ⚙️ How It Works
 
 1. On first load, enter your **name** — the app will personalize messages for you.  
