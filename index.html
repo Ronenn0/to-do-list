@@ -63,17 +63,17 @@
         <form id="task-form">
             <input type="text" id="task-input" placeholder="Describe the task..." maxlength="50">
             <input type="date" aria-label="new task's date" id="task-date">
-            <input type="submit" aria-label="Add task button" class="add-task" value="Add">
+            <input type="submit" aria-label="Add task button" class="add-task" value="Add Task">
         </form>
         <div class="message-container">
             <p id="message"></p>
         </div>
 
         <div class="filters">
-            <button class="all">All</button>
-            <button class="activated">Pending</button>
-            <button class="completed">Completed</button>
-            <input type="button" class="sort-by-date" value="Sort by date">
+            <button class="all">All tasks</button>
+            <button class="activated">Pending tasks</button>
+            <button class="completed">Completed tasks</button>
+            <input type="button" class="sort-by-date" value="↑ Sort by date ↑" aria-label="Sort tasks by date">
 
         </div>
         <ul id="task-list"></ul>

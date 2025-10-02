@@ -1,5 +1,5 @@
 let filter = 0; // current filter 0, 1, 2
-let filterByDate = false;
+let filterByDateFlag = 0; // 0: not sorted, 1: sorted ASC, 2: sorted DESC
 let tasks = [];
 let username = null;
 const filterButtons = document.querySelectorAll('.filters button');
@@ -149,10 +149,21 @@ function filterTasks(filter) {
 /**
  * 
  * @param {Array} tasksList -> array of Tasks
- * @returns a sorted array of tasks sorted by date.
+ * sorts the tasksList by date according to the filterByDateFlag variable.
+ * values:
+ *  0: not sorted.
+ *  1: sorted by date ascending.
+ *  2: sorted by date descending.
  */
 function sortTasks(tasksList) {
-    return tasksList.sort((a, b) => new Date(a.date) - new Date(b.date));
+    switch (filterByDateFlag) {
+        case 1:
+            tasksList = tasksList.sort((a, b) => new Date(a.date) - new Date(b.date));
+            break;
+        case 2:
+            tasksList = tasksList.sort((a, b) => new Date(b.date) - new Date(a.date));
+            break;
+    }
 }
 
 /**
@@ -189,14 +200,10 @@ function removeClass(element, className) {
  *  
  *  The function displays a list of tasks with or without filter inside the ul#todo-list Element.
  */
-function renderTasks(filterByDate) {
+function renderTasks() {
     const tasksContainer = document.querySelector('#task-list');
     let HTML = '';
-    //filters by date and saves the filtered list.
-    if (filterByDate) {
-        tasks = sortTasks(tasks);
-        Task.saveTasks();
-    }
+
     filterTasks(filter);
     tasks.forEach(task => {
 
@@ -295,14 +302,28 @@ function addFormEventListener() {
 
 /**
  * filters tasks when buttons(filters) are clicked.
+ * also sorts tasks by date when the sort button is clicked.
  */
 function addFilterEventListeners() {
     //sorts by date
     const dateFilter = document.querySelector('.sort-by-date');
     dateFilter.addEventListener('click', () => {
-        // filterByDate = !filterByDate;
-        renderTasks(true);
-        message('Sorted tasks by date!');
+
+        let messageSentence;
+        filterByDateFlag = ((filterByDateFlag) % 2) + 1;
+        if (filterByDateFlag == 1) {
+            dateFilter.value = '↓ Sort by date ↓';
+            messageSentence = 'Sorting tasks by date ascending!';
+        } else if (filterByDateFlag == 2) {
+            dateFilter.value = '↑ Sort by date ↑';
+            messageSentence = 'Sorting tasks by date descending!';
+        }
+        dateFilter.classList.toggle('ascending');
+        dateFilter.classList.toggle('descending');
+        sortTasks(tasks);
+        Task.saveTasks();
+        renderTasks();
+        message(messageSentence);
     });
 
     filterButtons.forEach((button, index) => {
@@ -325,6 +346,7 @@ function addFilterEventListeners() {
  */
 function addLoadEventListener() {
     window.addEventListener('load', () => {
+
         //exit screen
         const exitScreenButton = document.querySelector('.welcome-screen button.exit-screen');
         exitScreenButton.addEventListener('click', () => {

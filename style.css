@@ -61,6 +61,15 @@ body.dark-mode .updaters button {
     background-color: var(--third-background-color);
 }
 
+body.dark-mode .filters button:not(.picked) {
+    color: gray;
+}
+
+body.dark-mode .filters button:not(.picked):hover {
+    color: rgb(179, 179, 179);
+    scale: 1.02;
+}
+
 body.dark-mode textarea,
 body.dark-mode p {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
@@ -228,9 +237,8 @@ body.dark-mode form input.add-task:hover {
 
 .filters {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 20px;
 }
 
 .filters button {
@@ -240,17 +248,19 @@ body.dark-mode form input.add-task:hover {
     background-color: white;
     border: none;
     border-radius: 4px;
+    box-shadow: 0px 0px 10px var(--third-background-color);
+    transition: all 0.15s;
 }
 
 .filters button:hover {
     background-color: var(--hover-background-color);
-
     color: white;
 }
 
 .filters button.picked {
     background-color: var(--primary-background-color);
     color: var(--primary-color);
+    scale: 1.125;
 }
 
 #task-list {
@@ -381,6 +391,7 @@ input.sort-by-date {
     background-color: var(--primary-background-color);
     color: var(--primary-color);
     border: 1px solid var(--primary-background-color);
+    box-shadow: 0px 0px 10px var(--third-background-color);
     padding: 4px 8px;
     border-radius: 5px;
     cursor: pointer;
@@ -390,7 +401,6 @@ input.sort-by-date {
 input.sort-by-date:hover {
     background-color: var(--primary-background-color);
     color: var(--primary-color);
-    border: 1px solid white;
     transform: translateY(-3px);
 }
 
@@ -603,5 +613,29 @@ body.asking-for-name .welcome-screen button.exit-screen {
         & * {
             text-align: center;
         }
+    }
+}
+
+@media (max-width: 600px) {
+    .filters {
+        margin: 20px 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .filters button.picked {
+        scale: 1.05;
+    }
+
+    .filters button {}
+
+    .filters input.sort-by-date {
+        margin-top: 13px;
+    }
+
+    .filters button,
+    .filters input[type="button"] {
+        width: 90%;
     }
 }
