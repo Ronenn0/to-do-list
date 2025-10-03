@@ -627,9 +627,10 @@ body.asking-for-name .welcome-screen button.exit-screen {
 
         & p.task-date {
             justify-self: flex-start;
+            text-align: left;
         }
 
-        & * {
+        & textarea.task-name {
             text-align: center;
         }
     }
