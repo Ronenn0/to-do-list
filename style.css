@@ -70,6 +70,17 @@ body.dark-mode .filters button:not(.picked):hover {
     scale: 1.02;
 }
 
+body.dark-mode .filters button.picked {
+    background-color: #303030;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.3);
+
+
+}
+
+body.dark-mode .filters button {
+    box-shadow: 0px 0px 4px rgba(255, 255, 255, 0.3);
+}
+
 body.dark-mode textarea,
 body.dark-mode p {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
@@ -77,6 +88,13 @@ body.dark-mode p {
 
 body.dark-mode form #task-input {
     border-color: #666;
+}
+
+body.dark-mode #task-date {
+    background-color: var(--third-background-color);
+    outline: none;
+    border: 1px solid #666;
+    color: var(--primary-color);
 }
 
 main {
@@ -217,6 +235,7 @@ body.dark-mode form input.add-task:hover {
     background-color: var(--primary-background-color);
 }
 
+
 .message-container {
     position: fixed;
     left: 0;
@@ -258,8 +277,8 @@ body.dark-mode form input.add-task:hover {
 }
 
 .filters button.picked {
-    background-color: var(--primary-background-color);
-    color: var(--primary-color);
+    background-color: var(--secondary-color);
+    color: white;
     scale: 1.125;
 }
 
@@ -401,11 +420,11 @@ input.sort-by-date {
 input.sort-by-date:hover {
     background-color: var(--primary-background-color);
     color: var(--primary-color);
-    transform: translateY(-3px);
+    scale: 0.95;
 }
 
 input.sort-by-date:active {
-    scale: 1.1;
+    scale: 0.85;
 }
 
 body>footer {
@@ -616,7 +635,7 @@ body.asking-for-name .welcome-screen button.exit-screen {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
     .filters {
         margin: 20px 0;
         flex-direction: column;
@@ -627,8 +646,6 @@ body.asking-for-name .welcome-screen button.exit-screen {
     .filters button.picked {
         scale: 1.05;
     }
-
-    .filters button {}
 
     .filters input.sort-by-date {
         margin-top: 13px;

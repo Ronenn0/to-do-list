@@ -312,10 +312,10 @@ function addFilterEventListeners() {
         let messageSentence;
         filterByDateFlag = ((filterByDateFlag) % 2) + 1;
         if (filterByDateFlag == 1) {
-            dateFilter.value = '↓ Sort by date ↓';
+            dateFilter.value = '▼ Sort by date ▼';
             messageSentence = 'Sorting tasks by date ascending!';
         } else if (filterByDateFlag == 2) {
-            dateFilter.value = '↑ Sort by date ↑';
+            dateFilter.value = '▲ Sort by date ▲';
             messageSentence = 'Sorting tasks by date descending!';
         }
         dateFilter.classList.toggle('ascending');
