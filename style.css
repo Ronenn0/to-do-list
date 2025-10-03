@@ -241,6 +241,7 @@ body.dark-mode form input.add-task:hover {
     left: 0;
     right: 0;
     top: 0;
+    z-index: 10000;
     padding: 10px 30px;
     transform: translateY(-100%);
     background-color: var(--primary-background-color);
