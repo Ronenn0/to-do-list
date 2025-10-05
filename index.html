@@ -50,19 +50,20 @@
         <h1 class="welcome-message-header">🌟 Let’s make today productive!</h1>
         <p class="welcome-message-1">We’ll personalize your space just for you.</p>
         <p class="welcome-message-2">Type your name and let’s begin 🚀</p>
-        <button class="exit-screen">
+        <button class="exit-screen" aria-label="Exit welcome screen">
             <!-- <i class="fas fa-times"></i> -->
             Let’s go 🚀
         </button>
 
         <input type="text" aria-label="user name" placeholder="Enter your name..." class="name-input for-name"
             maxlength="30">
-        <button class="start-btn for-name">Start My Journey ✅</button>
+        <button class="start-btn for-name" aria-label="Start my journey">Start My Journey ✅</button>
     </div>
     <main>
         <form id="task-form">
-            <input type="text" id="task-input" placeholder="Describe the task..." maxlength="50">
-            <input type="date" aria-label="new task's date" id="task-date">
+            <input type="text" id="task-input" placeholder="Describe the task..." maxlength="50"
+                aria-label="new task description">
+            <input type="date" aria-label="new task's date" id="task-date" placeholder="dd/mm/yyyy">
             <input type="submit" aria-label="Add task button" class="add-task" value="Add Task">
         </form>
         <div class="message-container">
@@ -70,9 +71,9 @@
         </div>
 
         <div class="filters">
-            <button class="all">All tasks</button>
-            <button class="activated">Pending tasks</button>
-            <button class="completed">Completed tasks</button>
+            <button class="all" aria-label="Show all tasks">All tasks (20)</button>
+            <button class="activated" aria-label="Show pending tasks">Pending tasks (15)</button>
+            <button class="completed" aria-label="Show completed tasks">Completed tasks (5)</button>
             <input type="button" class="sort-by-date" value="▲ Sort by date ▲" aria-label="Sort tasks by date">
 
         </div>

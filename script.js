@@ -35,6 +35,7 @@ class Task {
             date: date
         }));
         Task.saveTasks();
+        updateFilterButtonsText();
         message('Task has been added successfully!', 2);
     }
 
@@ -52,6 +53,7 @@ class Task {
         this.isCompleted = !this.isCompleted;
 
         Task.saveTasks();
+        updateFilterButtonsText();
         message(this.isCompleted ? 'Task has been marked as completed.' : 'Task has been activated back.', 2);
     }
 
@@ -65,6 +67,7 @@ class Task {
             tasks.splice(index, 1);
         }
         Task.saveTasks();
+        updateFilterButtonsText();
         message('Task has been deleted!', 3);
     }
     /**
@@ -524,6 +527,12 @@ function message(messageText, type = 1) {
     }
 }
 
+/**
+ * Removes the message after a certain time.
+ * If timerMS is less than or equal to 0, it hides the message container.
+ * Otherwise, it decreases timerMS by 100 milliseconds, waits for 100 milliseconds,
+ * and then calls itself again to continue the countdown.
+ */
 async function removeMessage() {
     if (timerMS <= 0) {
         messageContainer.style.transform = 'translateY(-100%)';
@@ -534,14 +543,43 @@ async function removeMessage() {
     removeMessage();
 }
 
+
+/**
+ * 
+ * @param {*} ms - milliseconds to sleep
+ * @returns a promise that resolves after ms milliseconds.
+ * used to create delays in async functions.
+ */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/**
+ * Updates the text of filter buttons to include the count of tasks in each category.
+ * This function should be called whenever tasks are added, removed, or their completion status changes.
+ */
+function updateFilterButtonsText() {
+    const initialTexts = ['All tasks', 'Active tasks', 'Completed tasks'];
+    const counts = [
+        tasks.length,
+        tasks.filter(task => !task.isCompleted).length,
+        tasks.filter(task => task.isCompleted).length
+    ];
+    filterButtons.forEach((button, index) => {
+        button.textContent = `${initialTexts[index]} (${counts[index]})`;
+    });
+}
+
+
+/**
+ * Initializes the application by setting up event listeners, loading tasks, and rendering them.
+ * This function is called when the script is loaded.
+ */
 async function start() {
     addLoadEventListener();
     tasks = await getTasks();
     renderTasks();
+    updateFilterButtonsText();
     addFormEventListener();
     addFilterEventListeners();
 }
