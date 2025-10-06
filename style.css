@@ -746,6 +746,7 @@ body.asking-for-name .welcome-screen button.exit-screen {
 
     .progress-info {
         flex-direction: column;
+        justify-content: center;
         gap: 5px;
     }
 }
