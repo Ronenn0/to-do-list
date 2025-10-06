@@ -35,7 +35,7 @@ class Task {
             date: date
         }));
         Task.saveTasks();
-        updateFilterButtonsText();
+        updateTaskCounts();
         message('Task has been added successfully!', 2);
     }
 
@@ -53,7 +53,7 @@ class Task {
         this.isCompleted = !this.isCompleted;
 
         Task.saveTasks();
-        updateFilterButtonsText();
+        updateTaskCounts();
         message(this.isCompleted ? 'Task has been marked as completed.' : 'Task has been activated back.', 2);
     }
 
@@ -67,7 +67,7 @@ class Task {
             tasks.splice(index, 1);
         }
         Task.saveTasks();
-        updateFilterButtonsText();
+        updateTaskCounts();
         message('Task has been deleted!', 3);
     }
     /**
@@ -223,11 +223,44 @@ function renderTasks() {
             activate: task.isCompleted ? '' : 'hidden'
         };
 
+        // Formatting the date to DD/MM/YYYY
+        const deadlineDate = task.date.split('-').reverse().join('/');
+
+        // Calculating the time left until the task date
+        // If the task date is valid, calculate the time left
+        // Otherwise, set timeLeftText to 'X'
+        let timeLeftText = 'X';
+        const taskDate = new Date(task.date);
+        if (taskDate != 'Invalid Date') {
+
+            const now = new Date();
+            const diffMs = taskDate - now;
+            const diffHours = diffMs / (1000 * 60 * 60);
+            const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+            if (diffHours < 0) {
+                timeLeftText = 'already passed';
+            } else if (diffHours < 24) {
+                timeLeftText = `${diffHours} hours left`;
+            } else if (diffDays < 7) {
+                timeLeftText = `${diffDays} days left`;
+            } else if (diffDays < 30) {
+                const weeksLeft = Math.floor(diffDays / 7);
+                timeLeftText = `${weeksLeft} week${weeksLeft > 1 ? 's' : ''} left`;
+            } else if (diffDays < 365) {
+                const monthsLeft = Math.floor(diffDays / 30);
+                timeLeftText = `${monthsLeft} month${monthsLeft > 1 ? 's' : ''} left`;
+            } else {
+                const yearsLeft = Math.floor(diffDays / 365);
+                timeLeftText = `${yearsLeft} year${yearsLeft > 1 ? 's' : ''} left`;
+            }
+        }
+
         HTML += `
         <li data-id="${task.id}" ${task.isCompleted ? "class='completed_li_design'" : ""}">
             <div class="left-side">
                 <p class="task-date" data-id="${task.id}">
-                    Deadline - ${task.date.split('-').reverse().join('/')}
+                    Deadline - ${deadlineDate} - ${timeLeftText}
                 </p>
                 <textarea class="task-name ${completedClassName}" data-id="${task.id}" aria-label="Task description" readonly>${task.name}</textarea>
             </div>
@@ -248,7 +281,10 @@ function renderTasks() {
     //no results
     if (HTML == '') {
         tasksContainer.innerHTML = `
-        <small>Found no tasks</small>
+        <li class="no-tasks">
+            <p>No tasks to show!</p>
+            <p>${filter == 1 ? 'You have no pending tasks! 🎉' : filter == 2 ? 'You have no completed tasks yet! 😔' : 'You have no tasks yet! 😔'}</p>
+        </li>
         `;
     } else tasksContainer.innerHTML = HTML;
     // document.querySelectorAll('.task-name').forEach(textarea => {
@@ -557,8 +593,9 @@ function sleep(ms) {
 /**
  * Updates the text of filter buttons to include the count of tasks in each category.
  * This function should be called whenever tasks are added, removed, or their completion status changes.
+ * Also updates the progress bar to reflect the number of completed tasks.
  */
-function updateFilterButtonsText() {
+function updateTaskCounts() {
     const initialTexts = ['All tasks', 'Active tasks', 'Completed tasks'];
     const counts = [
         tasks.length,
@@ -568,6 +605,17 @@ function updateFilterButtonsText() {
     filterButtons.forEach((button, index) => {
         button.textContent = `${initialTexts[index]} (${counts[index]})`;
     });
+
+    // Update progress bar
+    const progressText = document.querySelector('.progress-text');
+    const progressFill = document.querySelector('.progress-fill');
+    const progressPercentageText = document.querySelector('.progress-percentage');
+    const completedCount = counts[2];
+    const totalCount = counts[0];
+    progressText.textContent = `You have completed ${completedCount} out of ${totalCount} tasks`;
+    const progressPercentage = totalCount === 0 ? 0 : (completedCount / totalCount) * 100;
+    progressPercentageText.textContent = `${Math.round(progressPercentage)}%`;
+    progressFill.style.width = `${progressPercentage}%`;
 }
 
 
@@ -579,7 +627,7 @@ async function start() {
     addLoadEventListener();
     tasks = await getTasks();
     renderTasks();
-    updateFilterButtonsText();
+    updateTaskCounts();
     addFormEventListener();
     addFilterEventListeners();
 }

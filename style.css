@@ -322,7 +322,6 @@ body.dark-mode form input.add-task:hover {
     padding: 6px 10px;
     gap: 5px;
     background-color: var(--third-background-color);
-    /* opacity: 0.8; */
     transition: all 0.15s;
     border-radius: 5px;
 
@@ -426,6 +425,50 @@ input.sort-by-date:hover {
 
 input.sort-by-date:active {
     scale: 0.85;
+}
+
+#task-list li.no-tasks {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    user-select: none;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background-color: var(--third-background-color);
+    text-align: center;
+    box-shadow: 0px 0px 10px var(--third-background-color);
+    font-weight: bold;
+    border-radius: 5px;
+    min-height: 100px;
+    flex: 1;
+    opacity: 0;
+    animation: appear 1s forwards;
+    transition: all 0.5s;
+    filter: saturate(1.4);
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 0.9;
+        transform: translateY(0px);
+    }
+}
+
+#task-list li.no-tasks p {
+    font-size: 1rem;
+    font-weight: normal;
+    opacity: 0.7;
+    color: var(--primary-color);
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+
 }
 
 body>footer {
@@ -571,6 +614,47 @@ body.asking-for-name .welcome-screen button.exit-screen {
     display: none;
 }
 
+.progress {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex: 2;
+    margin-bottom: 10px;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    text-align: center;
+    white-space: nowrap;
+    color: var(--secondary-color);
+}
+
+.progress-percentage {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+    white-space: nowrap;
+}
+
+.progress-bar {
+    background-color: var(--primary-background-color);
+    border-radius: 20px;
+    width: 80%;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px var(--third-background-color);
+    margin-right: 15px;
+    flex: 1;
+}
+
+.progress-fill {
+    background-color: var(--secondary-color);
+    height: 15px;
+    border-radius: 20px;
+    transition: width 0.25s;
+}
+
 
 @keyframes move {
     from {
@@ -617,6 +701,7 @@ body.asking-for-name .welcome-screen button.exit-screen {
         flex-direction: column;
         align-items: center;
         justify-content: center;
+
 
         & div.left-side {
             width: 100%;
