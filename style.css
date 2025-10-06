@@ -428,17 +428,11 @@ input.sort-by-date:active {
 }
 
 #task-list li.no-tasks {
-    display: flex;
-    flex-direction: column;
     padding: 20px;
     user-select: none;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
     background-color: var(--third-background-color);
     text-align: center;
     box-shadow: 0px 0px 10px var(--third-background-color);
-    font-weight: bold;
     border-radius: 5px;
     min-height: 100px;
     flex: 1;
@@ -461,11 +455,8 @@ input.sort-by-date:active {
 }
 
 #task-list li.no-tasks p {
-    font-size: 1rem;
-    font-weight: normal;
-    opacity: 0.7;
+    opacity: 0.9;
     color: var(--primary-color);
-    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
     letter-spacing: 0.5px;
     line-height: 1.4;
 
@@ -615,18 +606,23 @@ body.asking-for-name .welcome-screen button.exit-screen {
 }
 
 .progress {
+    align-self: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    width: 80%;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 8px;
     gap: 15px;
-    flex: 2;
-    margin-bottom: 10px;
 }
 
 .progress-text {
     font-size: 0.9rem;
-    text-align: center;
+    /* text-align: center; */
     white-space: nowrap;
     color: var(--secondary-color);
 }
@@ -641,7 +637,7 @@ body.asking-for-name .welcome-screen button.exit-screen {
 .progress-bar {
     background-color: var(--primary-background-color);
     border-radius: 20px;
-    width: 80%;
+    width: 100%;
     overflow: hidden;
     box-shadow: 0px 0px 10px var(--third-background-color);
     margin-right: 15px;
@@ -741,5 +737,15 @@ body.asking-for-name .welcome-screen button.exit-screen {
     .filters button,
     .filters input[type="button"] {
         width: 90%;
+    }
+
+    .progress {
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    .progress-info {
+        flex-direction: column;
+        gap: 5px;
     }
 }
